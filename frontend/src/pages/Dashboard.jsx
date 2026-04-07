@@ -1,5 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { http } from '../api/http'
+import { useAuth } from '../auth/AuthContext'
+import ConfirmationDialog from '../components/ConfirmationDialog'
 import './Dashboard.css'
 
 function ThemeToggle() {
@@ -44,30 +47,84 @@ function ThemeToggle() {
 }
 
 function UserProfile() {
+  const { logout, user } = useAuth()
+  const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
-  
+  const [logoutConfirm, setLogoutConfirm] = useState(false)
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
+  const profileRef = useRef(null)
+
+  useEffect(() => {
+    function onClickOutside(e) {
+      if (!profileRef.current?.contains(e.target)) setIsOpen(false)
+    }
+    document.addEventListener('mousedown', onClickOutside)
+    return () => document.removeEventListener('mousedown', onClickOutside)
+  }, [])
+
+  async function onLogout() {
+    setLogoutConfirm(true)
+    setIsOpen(false)
+  }
+
+  async function confirmLogout() {
+    setIsLoggingOut(true)
+    try {
+      await logout()
+      navigate('/login', { replace: true })
+    } catch (error) {
+      console.error('Logout failed:', error)
+      setIsLoggingOut(false)
+      setLogoutConfirm(false)
+    }
+  }
+
   return (
-    <div className="user-profile">
-      <button 
-        className="user-profile__button"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="User menu"
-      >
-        <svg className="user-profile__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-          <circle cx="12" cy="7" r="4"></circle>
-        </svg>
-      </button>
-      
-      {isOpen && (
-        <div className="user-profile__dropdown">
-          <div className="user-profile__dropdown-item">Profile</div>
-          <div className="user-profile__dropdown-item">Settings</div>
-          <div className="user-profile__dropdown-divider"></div>
-          <div className="user-profile__dropdown-item">Logout</div>
-        </div>
-      )}
-    </div>
+    <>
+      <div className="user-profile" ref={profileRef}>
+        <button 
+          className="user-profile__button"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="User menu"
+        >
+          <svg className="user-profile__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </button>
+        
+        {isOpen && (
+          <div className="user-profile__dropdown">
+            <div className="user-profile__dropdown-header">
+              <div className="user-profile__name">{user?.name || 'User'}</div>
+              <div className="user-profile__email">{user?.email || ''}</div>
+            </div>
+            <div className="user-profile__dropdown-divider"></div>
+            <div className="user-profile__dropdown-item">Profile</div>
+            <div className="user-profile__dropdown-item">Settings</div>
+            <div className="user-profile__dropdown-divider"></div>
+            <button 
+              className="user-profile__dropdown-item user-profile__dropdown-item--danger"
+              onClick={onLogout}
+            >
+              Logout
+            </button>
+          </div>
+        )}
+      </div>
+
+      <ConfirmationDialog
+        isOpen={logoutConfirm}
+        title="Logout"
+        message="Are you sure you want to logout?"
+        type="warning"
+        confirmText="Logout"
+        cancelText="Cancel"
+        onConfirm={confirmLogout}
+        onCancel={() => setLogoutConfirm(false)}
+        isLoading={isLoggingOut}
+      />
+    </>
   )
 }
 

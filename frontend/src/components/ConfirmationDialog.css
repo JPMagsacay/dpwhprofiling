@@ -1,11 +1,11 @@
-/* Confirmation Dialog Styles */
-.confirmationDialog-overlay {
+/* Minimalist Confirmation Dialog Styles */
+.minimal-dialog-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,53 +14,97 @@
   animation: fadeIn 0.2s ease-out;
 }
 
-.confirmationDialog {
-  background: white;
+.minimal-dialog {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  max-width: 500px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 320px;
   width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
   animation: slideUp 0.3s ease-out;
+  overflow: hidden;
 }
 
-.confirmationDialog__header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1.5rem 1.5rem 1rem;
-  border-bottom: 1px solid #e5e7eb;
+.minimal-dialog__content {
+  padding: 1.25rem 1rem 0.75rem;
+  text-align: center;
 }
 
-.confirmationDialog__icon {
-  font-size: 1.5rem;
-  flex-shrink: 0;
-}
-
-.confirmationDialog__title {
-  margin: 0;
-  font-size: 1.25rem;
+.minimal-dialog__title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-h);
+  line-height: 1.3;
 }
 
-.confirmationDialog__body {
-  padding: 1rem 1.5rem;
-}
-
-.confirmationDialog__message {
-  line-height: 1.5;
-  color: #374151;
+.minimal-dialog__message {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text);
+  line-height: 1.4;
   white-space: pre-line;
 }
 
-.confirmationDialog__actions {
+.minimal-dialog__actions {
   display: flex;
-  gap: 0.75rem;
-  justify-content: flex-end;
-  padding: 1rem 1.5rem 1.5rem;
-  border-top: 1px solid #e5e7eb;
+  gap: 0.5rem;
+  padding: 0 1rem 1rem;
+}
+
+.minimal-dialog__btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background: transparent;
+}
+
+.minimal-dialog__btn--cancel {
+  color: var(--text);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+}
+
+.minimal-dialog__btn--cancel:hover:not(:disabled) {
+  background: var(--accent-bg);
+  color: var(--text-h);
+}
+
+.minimal-dialog__btn--warning {
+  background: #f59e0b;
+  color: white;
+}
+
+.minimal-dialog__btn--warning:hover:not(:disabled) {
+  background: #d97706;
+}
+
+.minimal-dialog__btn--danger {
+  background: #ef4444;
+  color: white;
+}
+
+.minimal-dialog__btn--danger:hover:not(:disabled) {
+  background: #dc2626;
+}
+
+.minimal-dialog__btn--info {
+  background: var(--accent);
+  color: white;
+}
+
+.minimal-dialog__btn--info:hover:not(:disabled) {
+  background: var(--accent-border);
+}
+
+.minimal-dialog__btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* Animations */
@@ -76,7 +120,7 @@
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -86,41 +130,24 @@
 
 /* Responsive */
 @media (max-width: 640px) {
-  .confirmationDialog {
+  .minimal-dialog {
     margin: 1rem;
     max-width: calc(100vw - 2rem);
   }
   
-  .confirmationDialog__header,
-  .confirmationDialog__body,
-  .confirmationDialog__actions {
-    padding-left: 1rem;
-    padding-right: 1rem;
+  .minimal-dialog__content {
+    padding: 1.5rem 1rem 1rem;
   }
   
-  .confirmationDialog__actions {
+  .minimal-dialog__actions {
+    padding: 0 1rem 1rem;
+  }
+  
+  .minimal-dialog__actions {
     flex-direction: column;
   }
   
-  .confirmationDialog__actions .btn {
+  .minimal-dialog__btn {
     width: 100%;
   }
-}
-
-/* Button danger style (if not already defined) */
-.btn--danger {
-  background-color: #dc2626;
-  color: white;
-  border-color: #dc2626;
-}
-
-.btn--danger:hover:not(:disabled) {
-  background-color: #b91c1c;
-  border-color: #b91c1c;
-}
-
-.btn--danger:disabled {
-  background-color: #9ca3af;
-  border-color: #9ca3af;
-  cursor: not-allowed;
 }

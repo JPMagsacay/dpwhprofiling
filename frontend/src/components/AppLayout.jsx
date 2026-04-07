@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import { useTheme } from '../theme/ThemeContext'
@@ -21,18 +21,8 @@ export default function AppLayout() {
   const { logout, user } = useAuth()
   const { theme, toggleTheme } = useTheme()
   const navigate = useNavigate()
-  const [menuOpen, setMenuOpen] = useState(false)
   const [logoutConfirm, setLogoutConfirm] = useState(false)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
-  const menuRef = useRef(null)
-
-  useEffect(() => {
-    function onClickOutside(e) {
-      if (!menuRef.current?.contains(e.target)) setMenuOpen(false)
-    }
-    document.addEventListener('mousedown', onClickOutside)
-    return () => document.removeEventListener('mousedown', onClickOutside)
-  }, [])
 
   async function onLogout() {
     setLogoutConfirm(true)

@@ -455,17 +455,41 @@
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 8px;
-  min-width: 140px;
+  min-width: 180px;
   box-shadow: var(--shadow);
   z-index: 20;
+  overflow: hidden;
+}
+
+.user-profile__dropdown-header {
+  padding: 0.75rem 1rem;
+  background: var(--bg);
+}
+
+.user-profile__name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-h);
+  margin-bottom: 0.25rem;
+}
+
+.user-profile__email {
+  font-size: 0.75rem;
+  color: var(--text);
+  opacity: 0.8;
 }
 
 .user-profile__dropdown-item {
+  display: block;
+  width: 100%;
   padding: 0.75rem 1rem;
   font-size: 0.875rem;
   color: var(--text);
   cursor: pointer;
   transition: all 0.15s ease;
+  background: none;
+  border: none;
+  text-align: left;
 }
 
 .user-profile__dropdown-item:hover {
@@ -473,18 +497,13 @@
   color: var(--text-h);
 }
 
-.user-profile__dropdown-item:first-child {
-  border-radius: 8px 8px 0 0;
+.user-profile__dropdown-item--danger {
+  color: #dc2626;
 }
 
-.user-profile__dropdown-item:last-child {
-  border-radius: 0 0 8px 8px;
-}
-
-.user-profile__dropdown-divider {
-  height: 1px;
-  background: var(--border);
-  margin: 0.25rem 0;
+.user-profile__dropdown-item--danger:hover {
+  background: rgba(220, 38, 38, 0.1);
+  color: #b91c1c;
 }
 
 /* Responsive Design */
