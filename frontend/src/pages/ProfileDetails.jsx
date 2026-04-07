@@ -1037,7 +1037,7 @@ function SalaryPanel({ profileId, baseSalary, currentStatus }) {
                 value={year}
                 onChange={(e) => setYear(Number(e.target.value))}
                 placeholder="e.g. 2026"
-                min="2000"
+                min="1970"
                 max="2100"
               />
             </label>
