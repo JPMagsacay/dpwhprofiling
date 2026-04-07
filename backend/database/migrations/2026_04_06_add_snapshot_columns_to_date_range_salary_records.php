@@ -13,6 +13,8 @@ return new class extends Migration
             $table->string('employment_status_snapshot')->nullable();
             $table->string('station_place_of_assignment_snapshot')->nullable();
             $table->string('branch_snapshot')->nullable();
+            $table->date('separation_date_snapshot')->nullable();
+            $table->string('separation_cause_snapshot')->nullable();
         });
     }
 
@@ -24,6 +26,8 @@ return new class extends Migration
                 'employment_status_snapshot',
                 'station_place_of_assignment_snapshot',
                 'branch_snapshot',
+                'separation_date_snapshot',
+                'separation_cause_snapshot',
             ]);
         });
     }

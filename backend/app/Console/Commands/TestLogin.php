@@ -7,9 +7,12 @@ use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
 #[Signature('app:test-login')]
-#[Description('Command description')]
+#[Description('Test login functionality')]
 class TestLogin extends Command
 {
+    protected $signature = 'app:test-login';
+    protected $description = 'Test login functionality';
+
     /**
      * Execute the console command.
      */

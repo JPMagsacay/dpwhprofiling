@@ -32,32 +32,36 @@ export default function Login() {
   return (
     <div className="loginPage">
       <main className="loginCard" role="main">
-        <section className="loginFormPane">
+        <section className="loginLogoPane" aria-hidden="true">
+          <img src="/dpwh-logo.png" alt="" className="loginLogoLarge" />
+          <p className="loginLogoTagline">DEPARTMENT OF PUBLIC WORKS AND HIGHWAYS</p>
+        </section>
 
-          <p className="loginSubtitle">Login to continue</p>
+        <section className="loginFormPane">
+          <h1 className="loginTitle">SERVICE PROFILING</h1>
 
           <form className="form" onSubmit={onSubmit}>
-            {/* EMAIL */}
             <label className="field">
+              <span className="field__label">Username or Email</span>
               <input
                 className="field__input"
-                type="email"
+                type="text"
                 autoComplete="email"
-                placeholder="Email"
+                placeholder="Enter your username or email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </label>
 
-            {/* PASSWORD */}
             <label className="field">
+              <span className="field__label">Password</span>
               <div className="passwordField">
                 <input
                   className="field__input"
                   type={showPassword ? 'text' : 'password'}
                   autoComplete="current-password"
-                  placeholder="Password"
+                  placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -86,27 +90,24 @@ export default function Login() {
               </div>
             </label>
 
-            {/* ERROR */}
             {error && (
               <div className="form__error">
                 {error?.message || 'Login failed'}
               </div>
             )}
 
-            {/* BUTTON */}
+            <div className="forgotPassword">
+              <Link to="/forgot-password">Forgot password?</Link>
+            </div>
+
             <button className="signInButton" disabled={submitting}>
-              {submitting ? 'Signing in…' : 'Sign in'}
+              {submitting ? 'Logging in...' : 'LOGIN'}
             </button>
           </form>
 
           <div className="loginFooter">
-            No account? <Link to="/register">Create one</Link>
+            Don't have an account? <Link to="/register">Sign up</Link>
           </div>
-        </section>
-
-        <section className="loginLogoPane" aria-hidden="true">
-          <img src="/dpwh-logo.png" alt="" className="loginLogoLarge" />
-          <p className="loginLogoTagline">DPWH services profiling</p>
         </section>
       </main>
     </div>

@@ -2,113 +2,97 @@
   min-height: 100svh;
   display: grid;
   place-items: center;
-  padding: 28px 18px;
+  padding: 20px 12px;
   box-sizing: border-box;
   background: linear-gradient(135deg, #f3f6fb 0%, #eef2f8 100%);
 }
 
 .loginCard {
-  width: min(960px, 100%);
-  min-height: 540px;
+  width: min(800px, 100%);
+  min-height: 480px;
   border: 1px solid rgba(11, 33, 79, 0.22);
-  border-radius: 20px;
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: var(--shadow);
   display: grid;
-  grid-template-columns: 1.05fr 1fr;
+  grid-template-columns: 1fr 1fr;
 }
 
 .loginFormPane {
-  background: #02025C;
-  color: #ffffff;
-  padding: 38px 34px;
-  display: grid;
-  align-content: center;
-  gap: 10px;
-}
-
-.loginLogoSection {
+  background: #ffffff;
+  color: #333333;
+  padding: 25px 25px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 32px;
-}
-
-.loginLogoSmall {
-  width: 80px;
-  height: auto;
-  object-fit: contain;
-}
-
-.loginTagline {
-  color: rgba(255, 255, 255, 0.92);
-  font-size: 18px;
-  font-weight: 500;
-  margin: 0;
-  text-align: center;
+  justify-content: center;
 }
 
 .loginTitle {
-  margin: 0;
-  color: #ffffff;
-  font-size: 42px;
-  line-height: 1.1;
-  letter-spacing: -0.4px;
-}
-
-.loginSubtitle {
-  color: rgba(255, 255, 255, 0.92);
-  margin-bottom: 14px;
+  margin: 0 0 20px 0;
+  color: #010066;
   font-size: 20px;
-}
-
-.loginFormPane .field__label {
-  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.1;
+  letter-spacing: -0.5px !important;
+  font-weight: 700;
+  text-align: center;
 }
 
 .loginFormPane .field__input {
-  background: rgba(255, 255, 255, 0.95);
-  border-color: rgba(255, 255, 255, 0.5);
-  color: #0b1220;
-  min-height: 48px;
+  background: #f8f9fa !important;
+  border: 2px solid #e9ecef !important;
+  color: #495057 !important;
+  min-height: 48px !important;
   box-sizing: border-box;
-  padding: 0 16px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 0 14px !important;
+  font-size: 15px !important;
+  border-radius: 6px !important;
   transition: all 0.2s ease;
+  width: 100%;
+}
+
+.passwordField {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.passwordField .field__input {
+  width: 100%;
+  padding-right: 40px; /* space for icon */
 }
 
 .loginFormPane .field__input:focus {
   outline: none;
-  border-color: rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 1);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+  border-color: #010066;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(1, 0, 102, 0.1);
 }
 
 .loginFormPane .field__input::placeholder {
-  color: rgba(11, 18, 32, 0.5);
+  color: #6c757d;
+  font-size: 14px;
 }
 
 .signInButton {
-  background: #ffffff;
-  border: 2px solid #ffffff;
-  color: #02025C;
+  background: #010066;
+  border: 2px solid #010066;
+  color: #ffffff;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
   min-height: 48px;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
-  padding: 0 24px;
+  padding: 0 16px;
   width: 100%;
+  margin-top: 8px;
 }
 
 .signInButton:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.9);
+  background: #004080;
+  border-color: #004080;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(1, 0, 102, 0.3);
 }
 
 .signInButton:disabled {
@@ -119,45 +103,116 @@
 .loginFormPane .btn--primary {
   background: #ffffff;
   border-color: #ffffff;
-  color: #0b4ea2;
+  color: #010066;
   font-weight: 700;
-  min-height: 48px;
-  font-size: 20px;
+  min-height: 40px;
+  font-size: 18px;
 }
 
 .loginFooter {
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.25);
-  color: rgba(255, 255, 255, 0.95);
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid #e9ecef;
+  color: #6c757d;
+  text-align: center;
+  font-size: 12px;
 }
 
 .loginFooter a {
-  color: #ffffff;
-  font-weight: 700;
+  color: #010066;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.loginFooter a:hover {
+  text-decoration: underline;
+}
+
+.forgotPassword {
+  text-align: right !important;
+  margin: 2px 0 !important;
+}
+
+.forgotPassword a {
+  color: #010066;
+  font-size: 12px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.forgotPassword a:hover {
+  text-decoration: underline;
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #6c757d;
+  padding: 4px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.loginFormPane .field__label {
+  color: #495057 !important;
+  font-size: 13px !important;
+  font-weight: 600;
+  margin-bottom: 1px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form__error {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  border: 1px solid #f5c6cb;
 }
 
 .loginLogoPane {
-  background: #ffffff;
+  background: linear-gradient(135deg, #eb3505 0%, #eb3505 50%, #010066 50%, #010066 100%);
   display: grid;
   place-items: center;
-  padding: 24px;
-  order: -1;
-  border-right: 1px solid rgba(11, 33, 79, 0.15);
+  padding: 35px 25px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0;
 }
 
 .loginLogoLarge {
-  width: min(340px, 78%);
+  width: min(240px, 65%);
   height: auto;
   object-fit: contain;
+  z-index: 2;
+  position: relative;
 }
 
 .loginLogoTagline {
-  color: #02025C;
-  font-size: 24px;
+  color: #ffffff;
+  font-size: 18px;
   font-weight: 600;
-  margin: 0 0 0 0;
+  margin: 14px 0 0 0;
   text-align: center;
+  letter-spacing: 0.3px;
+  line-height: 1.3;
+  z-index: 2;
+  position: relative;
 }
 
 @media (max-width: 860px) {
@@ -174,29 +229,4 @@
   .loginTitle {
     font-size: 34px;
   }
-
-  .loginSubtitle {
-    font-size: 18px;
-  }
-}
-.passwordField {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.passwordField .field__input {
-  width: 100%;
-  padding-right: 40px; /* space for icon */
-}
-
-.passwordToggle {
-  position: absolute;
-  right: 10px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  color: var(--text);
 }

@@ -53,53 +53,37 @@ export default function AppLayout() {
   return (
     <div className="shell">
       <aside className="sidenav">
-        <div className="sidenav__brand">Services Profiling</div>
-        <div className="sidenav__userWrap" ref={menuRef}>
-          <button className="sidenav__user" onClick={() => setMenuOpen((v) => !v)} type="button">
-            <div>
-              <div className="sidenav__userName">{user?.name}</div>
-              <div className="sidenav__userEmail">{user?.email}</div>
-            </div>
-            <span className="sidenav__userCaret">▾</span>
-          </button>
-
-          {menuOpen ? (
-            <div className="sidenav__menu">
-              <button
-                className="sidenav__menuBtn"
-                onClick={() => {
-                  setMenuOpen(false)
-                  navigate('/settings')
-                }}
-                type="button"
-              >
-                Settings
-              </button>
-              <button className="sidenav__menuBtn" onClick={toggleTheme} type="button">
-                {theme === 'dark' ? '☀️ Light mode' : '🌙 Dark mode'}
-              </button>
-              <button 
-                className="sidenav__menuBtn sidenav__menuBtn--danger" 
-                onClick={() => {
-                  setMenuOpen(false)
-                  onLogout()
-                }} 
-                type="button"
-              >
-                Logout
-              </button>
-            </div>
-          ) : null}
+        <div className="sidenav__logo">
+          <img src="/dpwh-logo.png" alt="DPWH Logo" className="sidenav__logo-img" />
         </div>
+        <div className="sidenav__brand">SYSTEM PROFILING</div>
 
         <nav className="sidenav__nav">
           <SideLink to="/dashboard" end>
+            <svg className="sidenav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+              <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+              <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+              <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+            </svg>
             Dashboard
           </SideLink>
           <SideLink to="/profiling" end>
+            <svg className="sidenav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <line x1="8" y1="6" x2="21" y2="6"></line>
+              <line x1="8" y1="12" x2="21" y2="12"></line>
+              <line x1="8" y1="18" x2="21" y2="18"></line>
+              <line x1="3" y1="6" x2="3.01" y2="6"></line>
+              <line x1="3" y1="12" x2="3.01" y2="12"></line>
+              <line x1="3" y1="18" x2="3.01" y2="18"></line>
+            </svg>
             Profiling
           </SideLink>
           <SideLink to="/profiling/archive">
+            <svg className="sidenav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2z"></path>
+              <rect x="3" y="4" width="18" height="2" rx="1"></rect>
+            </svg>
             Archive
           </SideLink>
         </nav>

@@ -1,18 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --card-bg: rgba(244, 243, 236, 0.62);
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
+  --text: #495057;
+  --text-h: #010066;
+  --bg: linear-gradient(135deg, #f3f6fb 0%, #eef2f8 100%);
+  --border: rgba(11, 33, 79, 0.22);
+  --code-bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --accent: #eb3505;
+  --accent-bg: rgba(235, 53, 5, 0.1);
+  --accent-border: rgba(235, 53, 5, 0.3);
   --social-bg: rgba(244, 243, 236, 0.5);
   --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px,
+    0 4px 12px rgba(1, 0, 102, 0.15);
 
   /* Status colors */
   --success-bg: rgba(34, 197, 94, 0.14);
@@ -27,8 +28,8 @@
   --error-border: rgba(220, 38, 38, 0.35);
   --error-text: var(--text-h);
 
-  --sans: 'Poppins', system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: 'Poppins', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: 'Montserrat', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: 'Montserrat', system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 18px/145% var(--sans);
@@ -40,6 +41,9 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  width: 100%;
+  box-sizing: border-box;
 
   @media (max-width: 1024px) {
     font-size: 16px;
@@ -47,18 +51,19 @@
 }
 
 :root[data-theme='dark'] {
-  --text: #9ca3af;
-  --text-h: #f3f4f6;
-  --bg: #16171d;
-  --border: #2e303a;
-  --code-bg: #1f2028;
-  --card-bg: rgba(31, 32, 40, 0.92);
-  --accent: #c084fc;
-  --accent-bg: rgba(192, 132, 252, 0.15);
-  --accent-border: rgba(192, 132, 252, 0.5);
-  --social-bg: rgba(47, 48, 58, 0.5);
+  --text: #e9ecef;
+  --text-h: #ffffff;
+  --bg: linear-gradient(135deg, #1a1d29 0%, #2d3748 100%);
+  --border: rgba(255, 255, 255, 0.1);
+  --code-bg: #2d3748;
+  --card-bg: rgba(45, 55, 72, 0.95);
+  --accent: #ff6b6b;
+  --accent-bg: rgba(255, 107, 107, 0.15);
+  --accent-border: rgba(255, 107, 107, 0.4);
+  --social-bg: rgba(45, 55, 72, 0.5);
   --shadow:
-    rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+    rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px,
+    0 4px 12px rgba(255, 107, 107, 0.2);
 
   /* Status colors for dark mode */
   --success-bg: rgba(34, 197, 94, 0.2);

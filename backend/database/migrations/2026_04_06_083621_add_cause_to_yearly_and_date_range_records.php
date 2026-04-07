@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('yearly_salary_records', function (Blueprint $table) {
-            $table->date('separation_date_snapshot')->nullable()->after('end_date');
-            $table->string('separation_cause_snapshot')->nullable()->after('separation_date_snapshot');
-        });
+        // Columns already added in earlier migrations
+        // Schema::table('yearly_salary_records', function (Blueprint $table) {
+        //     $table->date('separation_date_snapshot')->nullable()->after('end_date');
+        //     $table->string('separation_cause_snapshot')->nullable()->after('separation_date_snapshot');
+        // });
 
-        Schema::table('date_range_salary_records', function (Blueprint $table) {
-            $table->date('separation_date_snapshot')->nullable()->after('branch_snapshot');
-            $table->string('separation_cause_snapshot')->nullable()->after('separation_date_snapshot');
-        });
+        // Schema::table('date_range_salary_records', function (Blueprint $table) {
+        //     $table->date('separation_date_snapshot')->nullable()->after('branch_snapshot');
+        //     $table->string('separation_cause_snapshot')->nullable()->after('separation_date_snapshot');
+        // });
     }
 
     /**
