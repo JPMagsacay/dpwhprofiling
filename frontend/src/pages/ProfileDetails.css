@@ -420,7 +420,7 @@ input[type="checkbox"]:indeterminate {
 @media print {
   @page {
     size: A4 portrait;
-    margin: 10mm;
+    margin: 8mm;
   }
 
   html,
@@ -428,6 +428,8 @@ input[type="checkbox"]:indeterminate {
     background: #fff;
     margin: 0;
     padding: 0;
+    font-size: 10pt;
+    line-height: 1.2;
   }
 
   body * {
@@ -453,6 +455,9 @@ input[type="checkbox"]:indeterminate {
   .sr-container,
   .attendanceReportPrint {
     width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
   }
 
   .shell,
@@ -466,6 +471,105 @@ input[type="checkbox"]:indeterminate {
 
   .no-print {
     display: none;
+  }
+
+  /* Attendance Report Print Optimizations */
+  .attendanceReportPrint {
+    font-size: 9pt;
+    line-height: 1.1;
+  }
+
+  .attendanceReport__title {
+    font-size: 12pt !important;
+    margin: 4pt 0 !important;
+    font-weight: 700 !important;
+  }
+
+  .attendanceReport__table {
+    width: 100% !important;
+    margin: 4pt 0 !important;
+    font-size: 8pt !important;
+    border-collapse: collapse !important;
+  }
+
+  .attendanceReport__table th,
+  .attendanceReport__table td {
+    padding: 3pt 4pt !important;
+    font-size: 8pt !important;
+    line-height: 1.1 !important;
+    border: none !important;
+    text-align: left !important;
+  }
+
+  .attendanceReport__table th {
+    font-weight: 700 !important;
+    font-size: 8pt !important;
+    background: #f5f5f5 !important;
+  }
+
+  .attendanceReport__summary {
+    margin: 6pt 0 !important;
+  }
+
+  .attendanceReport__summary .h2 {
+    font-size: 10pt !important;
+    margin: 4pt 0 !important;
+    font-weight: 700 !important;
+  }
+
+  .attendanceReport__table--compact {
+    max-width: 100% !important;
+    margin: 4pt 0 !important;
+  }
+
+  .attendanceReport__table--compact th,
+  .attendanceReport__table--compact td {
+    padding: 2pt 3pt !important;
+    font-size: 7.5pt !important;
+    text-align: center !important;
+    border: none !important;
+  }
+
+  /* Service Record Print Optimizations */
+  .sr-container {
+    font-size: 9pt !important;
+    line-height: 1.1 !important;
+  }
+
+  .sr-table {
+    font-size: 7pt !important;
+    width: 100% !important;
+  }
+
+  .sr-table th,
+  .sr-table td {
+    padding: 2pt !important;
+    font-size: 7pt !important;
+    border: none !important;
+  }
+
+  .sr-header {
+    font-size: 8pt !important;
+  }
+
+  .sr-title-block .title {
+    font-size: 14pt !important;
+  }
+
+  .sr-title-block .subtitle {
+    font-size: 9pt !important;
+  }
+
+  /* Reduce spacing between elements */
+  .attendanceReport__summary,
+  .attendanceReport__table {
+    page-break-inside: avoid;
+  }
+
+  /* Ensure content fits on one page */
+  .attendanceReportPrint {
+    transform: scale(0.95);
+    transform-origin: top left;
   }
 }
 
