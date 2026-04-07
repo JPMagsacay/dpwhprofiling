@@ -389,7 +389,8 @@ input[type="checkbox"]:indeterminate {
 
 .attendanceReport__table th,
 .attendanceReport__table td {
-  border: 1px solid var(--border);
+  border: none;
+  border-bottom: 1px solid var(--border);
   padding: 8px 10px;
   text-align: left;
   color: var(--text-h);
@@ -406,6 +407,14 @@ input[type="checkbox"]:indeterminate {
 
 .attendanceReport__table--compact {
   max-width: 420px;
+}
+
+.attendanceReport__table--compact th,
+.attendanceReport__table--compact td {
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 8px 12px;
+  text-align: center;
 }
 
 @media print {
