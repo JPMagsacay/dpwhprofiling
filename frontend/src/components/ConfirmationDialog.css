@@ -1,0 +1,126 @@
+/* Confirmation Dialog Styles */
+.confirmationDialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.confirmationDialog {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease-out;
+}
+
+.confirmationDialog__header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.confirmationDialog__icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.confirmationDialog__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.confirmationDialog__body {
+  padding: 1rem 1.5rem;
+}
+
+.confirmationDialog__message {
+  line-height: 1.5;
+  color: #374151;
+  white-space: pre-line;
+}
+
+.confirmationDialog__actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  padding: 1rem 1.5rem 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .confirmationDialog {
+    margin: 1rem;
+    max-width: calc(100vw - 2rem);
+  }
+  
+  .confirmationDialog__header,
+  .confirmationDialog__body,
+  .confirmationDialog__actions {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .confirmationDialog__actions {
+    flex-direction: column;
+  }
+  
+  .confirmationDialog__actions .btn {
+    width: 100%;
+  }
+}
+
+/* Button danger style (if not already defined) */
+.btn--danger {
+  background-color: #dc2626;
+  color: white;
+  border-color: #dc2626;
+}
+
+.btn--danger:hover:not(:disabled) {
+  background-color: #b91c1c;
+  border-color: #b91c1c;
+}
+
+.btn--danger:disabled {
+  background-color: #9ca3af;
+  border-color: #9ca3af;
+  cursor: not-allowed;
+}
