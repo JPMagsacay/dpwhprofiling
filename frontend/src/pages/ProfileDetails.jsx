@@ -494,7 +494,7 @@ function AttendancePanel({ profileId, baseSalary }) {
                 type="checkbox"
                 checked={sortedDailyForYear.length > 0 && selectedRecords.size === sortedDailyForYear.length}
                 onChange={toggleSelectAll}
-                indeterminate={selectedRecords.size > 0 && selectedRecords.size < sortedDailyForYear.length}
+                indeterminate={selectedRecords.size > 0 && selectedRecords.size < sortedDailyForYear.length ? true : undefined}
               />
             </label>
           </div>

@@ -1,6 +1,5 @@
 .shell {
-  display: grid;
-  grid-template-columns: 280px 1fr;
+  display: block;
   min-height: 100svh;
   width: 100vw;
   max-width: 100vw;
@@ -9,14 +8,17 @@
 
 .shell__main {
   padding: 1rem;
+  padding-left: 281px;
   box-sizing: border-box;
   overflow-x: hidden;
   width: 100%;
+  min-height: 100svh;
 }
 
 .sidenav {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
   height: 100svh;
   overflow-y: auto;
   overflow-x: hidden;
@@ -28,6 +30,7 @@
   max-width: 280px;
   min-width: 280px;
   flex-shrink: 0;
+  z-index: 1000;
 }
 
 .sidenav__logo {
@@ -96,12 +99,16 @@
 }
 
 @media (max-width: 980px) {
-  .shell {
-    grid-template-columns: 1fr;
+  .shell__main {
+    padding-left: 1rem;
   }
 
   .sidenav {
+    position: relative;
     border-right: none;
     border-bottom: 1px solid var(--border);
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
   }
 }

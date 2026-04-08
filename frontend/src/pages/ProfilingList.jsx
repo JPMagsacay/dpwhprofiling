@@ -46,20 +46,21 @@ export default function ProfilingList() {
   }, [query])
 
   return (
-    <div className="page2">
-      <div className="page2__header">
-        <div className="page2__headerCenter">
-          <h1 className="h1">Profiling</h1>
-          <p className="p">Add and manage employee profiles (with photo, details, salary).</p>
+    <div className="dashboard">
+      <header className="dashboard__header">
+        <div className="dashboard__header-content">
+          <h1 className="dashboard__title">Profiling</h1>
+          <p className="dashboard__subtitle">Add and manage employee profiles (with photo, details, salary).</p>
         </div>
-        <div className="page2__headerActions">
+        <div className="dashboard__header-actions">
           <Link className="btn btn--primary" to="/profiling/new">
             + Add profile
           </Link>
         </div>
-      </div>
+      </header>
 
-      <div className="toolbar">
+      <main className="dashboard__main">
+        <div className="toolbar">
         <input
           className="input"
           placeholder="Search name…"
@@ -86,6 +87,7 @@ export default function ProfilingList() {
           </Link>
         ))}
       </div>
+      </main>
     </div>
   )
 }
