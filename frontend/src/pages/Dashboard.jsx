@@ -3,22 +3,19 @@ import { useNavigate } from 'react-router-dom'
 import { http } from '../api/http'
 import { useAuth } from '../auth/AuthContext'
 import ConfirmationDialog from '../components/ConfirmationDialog'
+import { DashboardSkeleton } from '../components/Skeleton'
 import './Dashboard.css'
 
+import { useTheme } from '../theme/ThemeContext'
+
 function ThemeToggle() {
-  const [isDark, setIsDark] = useState(() => {
-    return document.documentElement.getAttribute('data-theme') === 'dark'
-  })
-  
-  useEffect(() => {
-    const theme = isDark ? 'dark' : 'light'
-    document.documentElement.setAttribute('data-theme', theme)
-  }, [isDark])
+  const { theme, toggleTheme } = useTheme()
+  const isDark = theme === 'dark'
   
   return (
     <button 
       className="theme-toggle"
-      onClick={() => setIsDark(!isDark)}
+      onClick={toggleTheme}
       aria-label="Toggle theme"
     >
       <div className="theme-toggle__track">
@@ -221,12 +218,7 @@ export default function Dashboard() {
       </header>
 
       <main className="dashboard__main">
-        {loading && (
-          <div className="dashboard__loading">
-            <div className="loading-spinner"></div>
-            <span>Loading analytics…</span>
-          </div>
-        )}
+        {loading && <DashboardSkeleton />}
         
         {error && (
           <div className="dashboard__error">

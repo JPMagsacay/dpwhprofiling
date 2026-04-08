@@ -149,40 +149,80 @@ async function onSubmit(e) {
 
       <form className="card2 form2" onSubmit={onSubmit}>
         <div className="form2__grid">
-          {/* Full Name - Required */}
+          {/* Section: Personal Information */}
+          <div className="form2__section form2__section--full">
+            <h3 className="form2__section-title">Personal Information</h3>
+          </div>
+
+          {/* Full Name - 3 columns */}
+          <div className="form2__row form2__row--3col field2--full">
+            <label className="field2">
+              <span className="field2__label">Surname *</span>
+              <input
+                className="input"
+                value={surname}
+                onChange={(e) => setSurname(e.target.value)}
+                required
+                placeholder="Enter surname"
+              />
+            </label>
+
+            <label className="field2">
+              <span className="field2__label">Given Name *</span>
+              <input
+                className="input"
+                value={givenName}
+                onChange={(e) => setGivenName(e.target.value)}
+                required
+                placeholder="Enter given name"
+              />
+            </label>
+
+            <label className="field2">
+              <span className="field2__label">Middle Name</span>
+              <input
+                className="input"
+                value={middleName}
+                onChange={(e) => setMiddleName(e.target.value)}
+                placeholder="Enter middle name"
+              />
+            </label>
+          </div>
+
           <label className="field2">
-            <span className="field2__label">Surname *</span>
+            <span className="field2__label">Birth Date</span>
             <input
               className="input"
-              value={surname}
-              onChange={(e) => setSurname(e.target.value)}
-              required
+              type="date"
+              value={birthDate}
+              onChange={(e) => setBirthDate(e.target.value)}
             />
           </label>
 
-          <label className="field2">
-            <span className="field2__label">Given Name *</span>
+          <label className="field2 field2--full">
+            <span className="field2__label">Address</span>
             <input
               className="input"
-              value={givenName}
-              onChange={(e) => setGivenName(e.target.value)}
-              required
-            />
-          </label>
-
-          <label className="field2">
-            <span className="field2__label">Middle Name</span>
-            <input
-              className="input"
-              value={middleName}
-              onChange={(e) => setMiddleName(e.target.value)}
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Enter complete address"
             />
           </label>
 
           <label className="field2">
             <span className="field2__label">Position</span>
-            <input className="input" value={position} onChange={(e) => setPosition(e.target.value)} />
+            <input
+              className="input"
+              value={position}
+              onChange={(e) => setPosition(e.target.value)}
+              placeholder="e.g. Engineer, Admin"
+            />
           </label>
+
+          {/* Section: Employment Information */}
+          <div className="form2__section form2__section--full">
+            <h3 className="form2__section-title">Employment Information</h3>
+          </div>
 
           <label className="field2">
             <span className="field2__label">Designation</span>
@@ -190,11 +230,12 @@ async function onSubmit(e) {
               className="input"
               value={designation}
               onChange={(e) => setDesignation(e.target.value)}
+              placeholder="e.g. Senior, Junior"
             />
           </label>
 
           <label className="field2">
-            <span className="field2__label">Status</span>
+            <span className="field2__label">Employment Status</span>
             <input
               className="input"
               value={employmentStatus}
@@ -204,18 +245,43 @@ async function onSubmit(e) {
           </label>
 
           <label className="field2 field2--full">
-            <span className="field2__label">Station/Place of Assignment</span>
+            <span className="field2__label">Station / Place of Assignment</span>
             <input
               className="input"
               value={stationPlaceOfAssignment}
               onChange={(e) => setStationPlaceOfAssignment(e.target.value)}
+              placeholder="Enter assigned station or office location"
             />
           </label>
 
           <label className="field2">
             <span className="field2__label">Branch</span>
-            <input className="input" value={branch} onChange={(e) => setBranch(e.target.value)} />
+            <input
+              className="input"
+              value={branch}
+              onChange={(e) => setBranch(e.target.value)}
+              placeholder="Enter branch"
+            />
           </label>
+
+          <label className="field2">
+            <span className="field2__label">Base Salary *</span>
+            <input
+              className="input"
+              type="number"
+              min="0"
+              step="0.01"
+              value={baseSalary}
+              onChange={(e) => setBaseSalary(e.target.value)}
+              required
+              placeholder="0.00"
+            />
+          </label>
+
+          {/* Section: Separation Details */}
+          <div className="form2__section form2__section--full">
+            <h3 className="form2__section-title">Separation Details</h3>
+          </div>
 
           <label className="field2">
             <span className="field2__label">Separation Date</span>
@@ -233,33 +299,15 @@ async function onSubmit(e) {
               className="input"
               value={separationCause}
               onChange={(e) => setSeparationCause(e.target.value)}
+              placeholder="Reason for separation (if applicable)"
             />
           </label>
 
-          <label className="field2">
-            <span className="field2__label">Birth date</span>
-            <input className="input" type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
-          </label>
+          {/* Section: Photo */}
+          <div className="form2__section form2__section--full">
+            <h3 className="form2__section-title">Profile Photo</h3>
+          </div>
 
-          <label className="field2 field2--full">
-            <span className="field2__label">Address</span>
-            <input className="input" value={address} onChange={(e) => setAddress(e.target.value)} />
-          </label>
-
-          <label className="field2">
-            <span className="field2__label">Base salary</span>
-            <input
-              className="input"
-              type="number"
-              min="0"
-              step="0.01"
-              value={baseSalary}
-              onChange={(e) => setBaseSalary(e.target.value)}
-              required
-            />
-          </label>
-
-          {/* Photo Upload */}
           <label className="field2 field2--full">
             <span className="field2__label">Photo</span>
             <input
@@ -303,15 +351,14 @@ async function onSubmit(e) {
               </div>
             )}
 
-            {/* Show photo error */}
             {photoError && (
               <div className="alert" style={{ marginTop: '0.5rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <span style={{ color: '#dc2626', fontSize: '1rem' }}>⚠️</span>
                   <span>{photoError}</span>
                 </div>
-                <button 
-                  className="btn btn--sm" 
+                <button
+                  className="btn btn--sm"
                   onClick={() => setPhotoError(null)}
                   style={{ marginTop: '0.25rem' }}
                 >

@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { http } from '../api/http'
+import Modal from '../components/Modal'
+import ProfileFormModal from '../components/ProfileFormModal'
 
 function Avatar({ url, name }) {
   if (url) {
@@ -22,6 +24,7 @@ export default function ProfilingList() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [pageData, setPageData] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const query = useMemo(() => q.trim(), [q])
 
@@ -45,6 +48,14 @@ export default function ProfilingList() {
     }
   }, [query])
 
+  const handleModalSuccess = (newProfile) => {
+    // Refresh the list to show the new profile
+    setPageData(prev => ({
+      ...prev,
+      data: [newProfile, ...(prev?.data || [])]
+    }))
+  }
+
   return (
     <div className="dashboard">
       <header className="dashboard__header">
@@ -53,21 +64,25 @@ export default function ProfilingList() {
           <p className="dashboard__subtitle">Add and manage employee profiles (with photo, details, salary).</p>
         </div>
         <div className="dashboard__header-actions">
-          <Link className="btn btn--primary" to="/profiling/new">
-            + Add profile
-          </Link>
+          <div className="dashboard__header-actions-column">
+            <button className="btn btn--primary btn--add-profile" onClick={() => setIsModalOpen(true)}>
+              <svg className="btn__icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              Add Profile
+            </button>
+            <input
+              className="input input--compact"
+              placeholder="Search…"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+            />
+          </div>
         </div>
       </header>
 
       <main className="dashboard__main">
-        <div className="toolbar">
-        <input
-          className="input"
-          placeholder="Search name…"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-        />
-      </div>
 
       {loading ? <div className="card2">Loading…</div> : null}
       {error ? <div className="card2 card2--error">Failed to load profiles.</div> : null}
@@ -88,6 +103,19 @@ export default function ProfilingList() {
         ))}
       </div>
       </main>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Add Profile"
+        size="large"
+      >
+        <ProfileFormModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSuccess={handleModalSuccess}
+        />
+      </Modal>
     </div>
   )
 }
