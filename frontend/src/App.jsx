@@ -16,7 +16,7 @@ function App() {
   const location = useLocation()
 
   function RequireAuth({ children }) {
-    if (loading) return <div className="page page--center">Loading…</div>
+    if (loading) return <div className="page-loading">Loading...</div>
     if (!isAuthenticated) return <Navigate to="/login" state={{ from: location }} replace />
     return children
   }

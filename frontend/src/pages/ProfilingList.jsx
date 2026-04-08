@@ -25,26 +25,57 @@ export default function ProfilingList() {
   const [error, setError] = useState(null)
   const [pageData, setPageData] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [previousDataCount, setPreviousDataCount] = useState(3) // Track previous count
 
   const query = useMemo(() => q.trim(), [q])
 
+  // Calculate skeleton count - use previous data count or default
+  const getSkeletonCount = useMemo(() => {
+    if (loading) {
+      return previousDataCount // Use previous count while loading
+    }
+    return 3 // Default fallback
+  }, [loading, previousDataCount])
+
   useEffect(() => {
     let ignore = false
+    let loadingTimeout = null
+    
     async function run() {
       setLoading(true)
       setError(null)
+      
+      // Set timeout to force stop loading after 3 seconds
+      loadingTimeout = setTimeout(() => {
+        if (!ignore) {
+          setLoading(false)
+        }
+      }, 3000)
+      
       try {
         const res = await http.get('/employee-profiles', { params: query ? { q: query } : {} })
-        if (!ignore) setPageData(res.data)
+        if (!ignore) {
+          setPageData(res.data)
+          // Update previous count for next loading
+          setPreviousDataCount(res.data.data?.length || 3)
+        }
       } catch (e) {
         if (!ignore) setError(e)
       } finally {
-        if (!ignore) setLoading(false)
+        if (!ignore) {
+          setLoading(false)
+          if (loadingTimeout) {
+            clearTimeout(loadingTimeout)
+          }
+        }
       }
     }
     run()
     return () => {
       ignore = true
+      if (loadingTimeout) {
+        clearTimeout(loadingTimeout)
+      }
     }
   }, [query])
 
@@ -84,7 +115,35 @@ export default function ProfilingList() {
 
       <main className="dashboard__main">
 
-      {loading ? <div className="card2">Loading…</div> : null}
+      {loading && (
+        <div className="grid">
+          {[...Array(getSkeletonCount)].map((_, index) => (
+            <div key={index} className="profileCard profileCard--skeleton">
+              <div className="profileCard__header">
+                <div className="avatar avatar--skeleton"></div>
+                <div className="profileCard__status profileCard__status--skeleton"></div>
+              </div>
+              <div className="profileCard__body">
+                <div className="profileCard__name profileCard__name--skeleton"></div>
+                <div className="profileCard__position profileCard__position--skeleton"></div>
+                <div className="profileCard__details">
+                  <div className="profileCard__detail">
+                    <div className="profileCard__detail-label profileCard__detail-label--skeleton"></div>
+                    <div className="profileCard__detail-value profileCard__detail-value--skeleton"></div>
+                  </div>
+                  <div className="profileCard__detail">
+                    <div className="profileCard__detail-label profileCard__detail-label--skeleton"></div>
+                    <div className="profileCard__detail-value profileCard__detail-value--skeleton"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="profileCard__footer">
+                <div className="profileCard__action profileCard__action--skeleton"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
       {error ? <div className="card2 card2--error">Failed to load profiles.</div> : null}
 
       {!loading && pageData?.data?.length === 0 ? <div className="card2">No profiles yet.</div> : null}
@@ -92,11 +151,36 @@ export default function ProfilingList() {
       <div className="grid">
         {(pageData?.data || []).map((p) => (
           <Link key={p.id} className="profileCard" to={`/profiling/${p.id}`}>
-            <Avatar url={p.photo_url} name={p.full_name} />
+            <div className="profileCard__header">
+              <Avatar url={p.photo_url} name={p.full_name} />
+              {p.employment_status && (
+                <div className={`profileCard__status profileCard__status--${p.employment_status.toLowerCase()}`}>
+                  {p.employment_status}
+                </div>
+              )}
+            </div>
             <div className="profileCard__body">
-              <div className="profileCard__name">{p.full_name}</div>
-              <div className="profileCard__meta">
-                {p.position || '—'} · Salary: {Number(p.base_salary || 0).toLocaleString()}
+              <h3 className="profileCard__name">{p.full_name}</h3>
+              <div className="profileCard__position">{p.position || 'Position not specified'}</div>
+              <div className="profileCard__details">
+                <div className="profileCard__detail">
+                  <span className="profileCard__detail-label">Salary</span>
+                  <span className="profileCard__detail-value">₱{Number(p.base_salary || 0).toLocaleString()}</span>
+                </div>
+                {p.branch && (
+                  <div className="profileCard__detail">
+                    <span className="profileCard__detail-label">Branch</span>
+                    <span className="profileCard__detail-value">{p.branch}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="profileCard__footer">
+              <div className="profileCard__action">
+                <span>View Details</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
               </div>
             </div>
           </Link>

@@ -179,21 +179,39 @@ export default function Dashboard() {
 
   useEffect(() => {
     let ignore = false
+    let loadingTimeout = null
+    
     async function run() {
       setLoading(true)
       setError(null)
+      
+      // Set timeout to force stop loading after 3 seconds
+      loadingTimeout = setTimeout(() => {
+        if (!ignore) {
+          setLoading(false)
+        }
+      }, 3000)
+      
       try {
         const res = await http.get('/analytics/dashboard')
         if (!ignore) setData(res.data)
       } catch (e) {
         if (!ignore) setError(e)
       } finally {
-        if (!ignore) setLoading(false)
+        if (!ignore) {
+          setLoading(false)
+          if (loadingTimeout) {
+            clearTimeout(loadingTimeout)
+          }
+        }
       }
     }
     run()
     return () => {
       ignore = true
+      if (loadingTimeout) {
+        clearTimeout(loadingTimeout)
+      }
     }
   }, [])
 
