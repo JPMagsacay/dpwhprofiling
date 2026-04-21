@@ -236,12 +236,15 @@ async function onSubmit(e) {
 
           <label className="field2">
             <span className="field2__label">Employment Status</span>
-            <input
+            <select
               className="input"
               value={employmentStatus}
               onChange={(e) => setEmploymentStatus(e.target.value)}
-              placeholder="e.g. Permanent, Casual"
-            />
+            >
+              <option value="">Select status</option>
+              <option value="Permanent">Permanent</option>
+              <option value="Casual">Casual</option>
+            </select>
           </label>
 
           <label className="field2 field2--full">
@@ -358,6 +361,7 @@ async function onSubmit(e) {
                   <span>{photoError}</span>
                 </div>
                 <button
+                  type="button"
                   className="btn btn--sm"
                   onClick={() => setPhotoError(null)}
                   style={{ marginTop: '0.25rem' }}
@@ -377,7 +381,7 @@ async function onSubmit(e) {
         )}
 
         <div className="actions">
-          <button className="btn btn--primary" disabled={submitting}>
+          <button type="submit" className="btn btn--primary" disabled={submitting}>
             {submitting ? 'Saving…' : 'Save'}
           </button>
         </div>

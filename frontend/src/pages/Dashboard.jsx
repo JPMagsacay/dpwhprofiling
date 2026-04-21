@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { http } from '../api/http'
 import { useAuth } from '../auth/AuthContext'
 import ConfirmationDialog from '../components/ConfirmationDialog'
-import { DashboardSkeleton } from '../components/Skeleton'
 import './Dashboard.css'
 
 import { useTheme } from '../theme/ThemeContext'
@@ -13,7 +12,8 @@ function ThemeToggle() {
   const isDark = theme === 'dark'
   
   return (
-    <button 
+    <button
+      type="button"
       className="theme-toggle"
       onClick={toggleTheme}
       aria-label="Toggle theme"
@@ -21,11 +21,11 @@ function ThemeToggle() {
       <div className="theme-toggle__track">
         <div className={`theme-toggle__thumb ${isDark ? 'dark' : 'light'}`}>
           {isDark ? (
-            <svg className="theme-toggle__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg className="theme-toggle__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
             </svg>
           ) : (
-            <svg className="theme-toggle__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg className="theme-toggle__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <circle cx="12" cy="12" r="5"></circle>
               <line x1="12" y1="1" x2="12" y2="3"></line>
               <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -80,11 +80,13 @@ function UserProfile() {
     <>
       <div className="user-profile" ref={profileRef}>
         <button 
+          type="button"
           className="user-profile__button"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="User menu"
         >
           <svg className="user-profile__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <title>User profile</title>
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
@@ -100,7 +102,8 @@ function UserProfile() {
             <div className="user-profile__dropdown-item">Profile</div>
             <div className="user-profile__dropdown-item">Settings</div>
             <div className="user-profile__dropdown-divider"></div>
-            <button 
+            <button
+              type="button"
               className="user-profile__dropdown-item user-profile__dropdown-item--danger"
               onClick={onLogout}
             >
@@ -173,50 +176,29 @@ function InsightItem({ label, value, change }) {
 }
 
 export default function Dashboard() {
-  const [loading, setLoading] = useState(true)
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
 
   useEffect(() => {
     let ignore = false
-    let loadingTimeout = null
-    
+
     async function run() {
-      setLoading(true)
       setError(null)
-      
-      // Set timeout to force stop loading after 3 seconds
-      loadingTimeout = setTimeout(() => {
-        if (!ignore) {
-          setLoading(false)
-        }
-      }, 3000)
-      
       try {
         const res = await http.get('/analytics/dashboard')
         if (!ignore) setData(res.data)
       } catch (e) {
         if (!ignore) setError(e)
-      } finally {
-        if (!ignore) {
-          setLoading(false)
-          if (loadingTimeout) {
-            clearTimeout(loadingTimeout)
-          }
-        }
       }
     }
     run()
     return () => {
       ignore = true
-      if (loadingTimeout) {
-        clearTimeout(loadingTimeout)
-      }
     }
   }, [])
 
   const cards = useMemo(() => data?.cards || {}, [data])
-  const salaryByYear = data?.salary_by_year || []
+  const salaryByYear = useMemo(() => data?.salary_by_year || [], [data])
   const latestSalary = salaryByYear.length ? Number(salaryByYear[0]?.total_salary || 0) : 0
   const previousSalary = salaryByYear.length > 1 ? Number(salaryByYear[1]?.total_salary || 0) : 0
   const salaryDelta = latestSalary - previousSalary
@@ -227,17 +209,15 @@ export default function Dashboard() {
       <header className="dashboard__header">
         <div className="dashboard__header-content">
           <h1 className="dashboard__title">Dashboard</h1>
-          <p className="dashboard__subtitle">Analytics overview for the system</p>
+          <p className="dashboard__subtitle">General overview of the record in the system</p>
         </div>
         <div className="dashboard__header-actions">
           <ThemeToggle />
           <UserProfile />
+        
         </div>
       </header>
-
-      <main className="dashboard__main">
-        {loading && <DashboardSkeleton />}
-        
+      <main className={`dashboard__main ${data ? 'dashboard__main--loaded' : ''}`}>
         {error && (
           <div className="dashboard__error">
             <div className="error-icon">!</div>
@@ -245,24 +225,23 @@ export default function Dashboard() {
           </div>
         )}
 
-        {!loading && data && (
+        {(
           <div className="dashboard__content">
             <section className="metrics-grid">
-              <MetricCard 
-                title="Profiles" 
+              <MetricCard
+                title="Profiles"
                 value={cards.profiles ?? 0}
                 subtitle="Total registered profiles"
               />
-              <MetricCard 
-                title="Present Days" 
+              <MetricCard
+                title="Present Days"
                 value={cards.present_days_year ?? 0}
-                subtitle={`For ${data.year}`}
+                subtitle={`For ${data?.year || '2026'}`}
               />
-              <MetricCard 
-                title="Presence Coverage" 
+              <MetricCard
+                title="Presence Coverage"
                 value={`${cards.presence_coverage_year ?? 0}%`}
-                subtitle={`For ${data.year}`}
-                trend={cards.presence_coverage_year ? cards.presence_coverage_year - 85 : 0}
+                subtitle={`For ${data?.year || '2026'}`}
               />
             </section>
 

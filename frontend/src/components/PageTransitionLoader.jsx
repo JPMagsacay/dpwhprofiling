@@ -7,11 +7,9 @@ export default function PageTransitionLoader() {
 
   useEffect(() => {
     setIsLoading(true)
-    
-    // Hide loader after a short delay to simulate page transition
     const timer = setTimeout(() => {
       setIsLoading(false)
-    }, 800)
+    }, 50)
 
     return () => clearTimeout(timer)
   }, [location.pathname])

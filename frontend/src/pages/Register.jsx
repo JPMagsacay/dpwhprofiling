@@ -117,7 +117,7 @@ export default function Register() {
 
         {error ? <div className="form__error">{error.message}</div> : null}
 
-        <button className="btn btn--primary" disabled={submitting}>
+        <button type="submit" className="btn btn--primary" disabled={submitting}>
           {submitting ? 'Creating…' : 'Create account'}
         </button>
       </form>

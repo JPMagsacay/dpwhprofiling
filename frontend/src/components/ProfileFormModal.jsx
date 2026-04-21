@@ -189,6 +189,11 @@ export default function ProfileFormModal({ isOpen, onClose, onSuccess, editId = 
     <div className="form2">
       <form onSubmit={onSubmit}>
         <div className="form2__grid">
+          {/* Personal Information */}
+          <div className="form2__section">
+            <h3 className="form2__sectionTitle">Personal Information</h3>
+          </div>
+
           {/* Full Name - 3 columns */}
           <div className="form2__row form2__row--3col field2--full">
             <label className="field2">
@@ -198,6 +203,7 @@ export default function ProfileFormModal({ isOpen, onClose, onSuccess, editId = 
                 value={surname}
                 onChange={(e) => setSurname(e.target.value)}
                 required
+                placeholder="Enter surname"
               />
             </label>
 
@@ -208,6 +214,7 @@ export default function ProfileFormModal({ isOpen, onClose, onSuccess, editId = 
                 value={givenName}
                 onChange={(e) => setGivenName(e.target.value)}
                 required
+                placeholder="Enter given name"
               />
             </label>
 
@@ -217,15 +224,34 @@ export default function ProfileFormModal({ isOpen, onClose, onSuccess, editId = 
                 className="input"
                 value={middleName}
                 onChange={(e) => setMiddleName(e.target.value)}
+                placeholder="Enter middle name"
               />
             </label>
+          </div>
+
+          {/* Birth Date and Address - 2 columns */}
+          <div className="form2__row form2__row--2col field2--full">
+            <label className="field2">
+              <span className="field2__label">Birth Date</span>
+              <input className="input" type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
+            </label>
+
+            <label className="field2">
+              <span className="field2__label">Address</span>
+              <input className="input" value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Enter complete address" />
+            </label>
+          </div>
+
+          {/* Employment Information */}
+          <div className="form2__section">
+            <h3 className="form2__sectionTitle">Employment Information</h3>
           </div>
 
           {/* Position, Designation, Status - 3 columns */}
           <div className="form2__row form2__row--3col field2--full">
             <label className="field2">
               <span className="field2__label">Position</span>
-              <input className="input" value={position} onChange={(e) => setPosition(e.target.value)} />
+              <input className="input" value={position} onChange={(e) => setPosition(e.target.value)} placeholder="e.g. Engineer, Admin" />
             </label>
 
             <label className="field2">
@@ -234,64 +260,43 @@ export default function ProfileFormModal({ isOpen, onClose, onSuccess, editId = 
                 className="input"
                 value={designation}
                 onChange={(e) => setDesignation(e.target.value)}
+                placeholder="e.g. Senior, Junior"
               />
             </label>
 
             <label className="field2">
-              <span className="field2__label">Status</span>
+              <span className="field2__label">Employment Status</span>
               <select
                 className="input"
                 value={employmentStatus}
                 onChange={(e) => setEmploymentStatus(e.target.value)}
               >
-                <option value="">Select Status</option>
+                <option value="">Select status</option>
                 <option value="Permanent">Permanent</option>
                 <option value="Casual">Casual</option>
               </select>
             </label>
           </div>
 
-          {/* Birth Date and Address - 2 columns */}
-          <div className="form2__row form2__row--2col field2--full">
-            <label className="field2">
-              <span className="field2__label">Birth date</span>
-              <input className="input" type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
-            </label>
-
-            <label className="field2">
-              <span className="field2__label">Address</span>
-              <input className="input" value={address} onChange={(e) => setAddress(e.target.value)} />
-            </label>
-          </div>
-
-          <label className="field2">
-            <span className="field2__label">Branch</span>
-            <input className="input" value={branch} onChange={(e) => setBranch(e.target.value)} />
-          </label>
-
-          <label className="field2">
-            <span className="field2__label">Separation Date</span>
+          <label className="field2 field2--full">
+            <span className="field2__label">Station / Place of Assignment</span>
             <input
               className="input"
-              type="date"
-              value={separationDate}
-              onChange={(e) => setSeparationDate(e.target.value)}
+              value={stationPlaceOfAssignment}
+              onChange={(e) => setStationPlaceOfAssignment(e.target.value)}
+              placeholder="Enter assigned station or office location"
             />
           </label>
 
-          {/* Station/Place of Assignment and Base Salary - 2 columns */}
+          {/* Branch and Base Salary - 2 columns */}
           <div className="form2__row form2__row--2col field2--full">
             <label className="field2">
-              <span className="field2__label">Station/Place of Assignment</span>
-              <input
-                className="input"
-                value={stationPlaceOfAssignment}
-                onChange={(e) => setStationPlaceOfAssignment(e.target.value)}
-              />
+              <span className="field2__label">Branch</span>
+              <input className="input" value={branch} onChange={(e) => setBranch(e.target.value)} placeholder="Enter branch" />
             </label>
 
             <label className="field2">
-              <span className="field2__label">Base salary</span>
+              <span className="field2__label">Base Salary *</span>
               <input
                 className="input"
                 type="number"
@@ -300,23 +305,49 @@ export default function ProfileFormModal({ isOpen, onClose, onSuccess, editId = 
                 value={baseSalary}
                 onChange={(e) => setBaseSalary(e.target.value)}
                 required
+                placeholder="0.00"
               />
             </label>
           </div>
 
-          <label className="field2 field2--full">
-            <span className="field2__label">Separation Cause</span>
-            <input
-              className="input"
-              value={separationCause}
-              onChange={(e) => setSeparationCause(e.target.value)}
-            />
-          </label>
+          {/* Separation Details */}
+          <div className="form2__section">
+            <h3 className="form2__sectionTitle">Separation Details</h3>
+          </div>
 
-          {/* Photo Upload */}
+          {/* Separation Date and Cause - 2 columns */}
+          <div className="form2__row form2__row--2col field2--full">
+            <label className="field2">
+              <span className="field2__label">Separation Date</span>
+              <input
+                className="input"
+                type="date"
+                value={separationDate}
+                onChange={(e) => setSeparationDate(e.target.value)}
+              />
+            </label>
+
+            <label className="field2">
+              <span className="field2__label">Separation Cause</span>
+              <input
+                className="input"
+                value={separationCause}
+                onChange={(e) => setSeparationCause(e.target.value)}
+                placeholder="Reason for separation (if applicable)"
+              />
+            </label>
+          </div>
+
+          {/* Profile Photo */}
+          <div className="form2__section">
+            <h3 className="form2__sectionTitle">Profile Photo</h3>
+          </div>
+
           <div className="field2 field2--full">
             <span className="field2__label">Photo</span>
-            <div 
+            <button
+              type="button"
+              aria-label="Photo upload area. Drag and drop an image, or press Enter to open file selector."
               className={`upload-area ${isDragging ? 'upload-area--dragging' : ''} ${photo || currentPhotoUrl ? 'upload-area--has-photo' : ''}`}
               onDragOver={(e) => {
                 e.preventDefault()
@@ -329,10 +360,16 @@ export default function ProfileFormModal({ isOpen, onClose, onSuccess, editId = 
               onDrop={(e) => {
                 e.preventDefault()
                 setIsDragging(false)
-                
+
                 const files = e.dataTransfer.files
                 if (files.length > 0) {
                   handleFileSelect(files[0])
+                }
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  e.currentTarget.querySelector('input[type="file"]')?.click()
                 }
               }}
             >
@@ -353,7 +390,7 @@ export default function ProfileFormModal({ isOpen, onClose, onSuccess, editId = 
                   <div className="upload-preview__image">
                     <img 
                       src={photo ? URL.createObjectURL(photo) : (currentPhotoUrl.startsWith('http') ? currentPhotoUrl : `http://127.0.0.1:8000${currentPhotoUrl}`)} 
-                      alt="Photo preview" 
+                      alt="Preview" 
                     />
                   </div>
                   <div className="upload-preview__overlay">
@@ -390,6 +427,7 @@ export default function ProfileFormModal({ isOpen, onClose, onSuccess, editId = 
                 <div className="upload-placeholder">
                   <div className="upload-placeholder__icon">
                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <title>Upload photo icon</title>
                       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                       <polyline points="17 8 12 3 7 8" />
                       <line x1="12" y1="3" x2="12" y2="15" />
@@ -399,12 +437,12 @@ export default function ProfileFormModal({ isOpen, onClose, onSuccess, editId = 
                     <p className="upload-placeholder__title">Drop photo here or click to browse</p>
                     <p className="upload-placeholder__subtitle">Supports: JPG, PNG, GIF, WebP (Max 5MB)</p>
                   </div>
-                  <button type="button" className="btn btn--outline">
+                  <span className="btn btn--outline">
                     Choose Photo
-                  </button>
+                  </span>
                 </div>
               )}
-            </div>
+            </button>
 
             {/* Show photo error */}
             {photoError && (
@@ -414,6 +452,7 @@ export default function ProfileFormModal({ isOpen, onClose, onSuccess, editId = 
                   <span className="upload-error__message">{photoError}</span>
                 </div>
                 <button 
+                  type="button"
                   className="upload-error__dismiss" 
                   onClick={() => setPhotoError(null)}
                 >
@@ -435,7 +474,7 @@ export default function ProfileFormModal({ isOpen, onClose, onSuccess, editId = 
           <button type="button" className="btn" onClick={onClose} disabled={submitting}>
             Cancel
           </button>
-          <button className="btn btn--primary" disabled={submitting}>
+          <button type="submit" className="btn btn--primary" disabled={submitting}>
             {submitting ? 'Saving…' : 'Save'}
           </button>
         </div>

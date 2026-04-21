@@ -234,6 +234,51 @@
   transform: translateX(2px);
 }
 
+/* Empty State */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  text-align: center;
+  background: linear-gradient(135deg, var(--card-bg) 0%, var(--bg) 100%);
+  border: 2px dashed var(--border);
+  border-radius: 20px;
+  margin: 24px 0;
+}
+
+.emptyState__icon {
+  width: 80px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
+  border-radius: 20px;
+  margin-bottom: 24px;
+  color: var(--primary);
+}
+
+.emptyState__icon svg {
+  width: 40px;
+  height: 40px;
+}
+
+.emptyState__title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-h);
+  margin: 0 0 8px 0;
+}
+
+.emptyState__description {
+  font-size: 15px;
+  color: var(--text-light);
+  margin: 0 0 24px 0;
+  max-width: 320px;
+  line-height: 1.5;
+}
+
 /* Skeleton Loading States */
 .profileCard--skeleton {
   pointer-events: none;
@@ -323,8 +368,8 @@
 }
 
 .avatar {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid var(--bg);
@@ -435,6 +480,17 @@
 .btn--danger {
   border-color: rgba(220, 38, 38, 0.35);
   background: rgba(220, 38, 38, 0.08);
+}
+
+.btn--warning {
+  border-color: rgba(249, 115, 22, 0.5);
+  background: rgba(249, 115, 22, 0.85);
+  color: white;
+}
+
+.btn--warning:hover {
+  background: rgba(249, 115, 22, 1);
+  border-color: rgba(249, 115, 22, 0.8);
 }
 
 .btn--sm {
@@ -987,6 +1043,7 @@
   min-width: auto;
   white-space: nowrap;
   gap: 6px;
+  border: none;
 }
 
 .btn__icon {
@@ -1142,4 +1199,33 @@
 /* Modal open state - prevents body scroll */
 body.modal-open {
   overflow: hidden;
+}
+
+/* Profiling list slide-in animations */
+.dashboard__main {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.dashboard__main--loaded {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.profileCard {
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: slideInCard 0.4s ease forwards;
+}
+
+@keyframes slideInCard {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }

@@ -15,11 +15,13 @@ class EmployeeProfileController extends Controller
     {
         $q = trim((string) $request->query('q', ''));
         $archived = filter_var($request->query('archived', false), FILTER_VALIDATE_BOOLEAN);
+        $employmentStatus = trim((string) $request->query('employment_status', ''));
 
         $profiles = EmployeeProfile::query()
             ->when($archived, fn ($query) => $query->whereNotNull('archived_at'))
             ->when(! $archived, fn ($query) => $query->whereNull('archived_at'))
             ->when($q !== '', fn ($query) => $query->whereRaw("CONCAT_WS(' ', surname, given_name, middle_name) like ?", ["%{$q}%"]))
+            ->when($employmentStatus !== '', fn ($query) => $query->where('employment_status', $employmentStatus))
             ->orderBy('surname')
             ->orderBy('given_name')
             ->paginate(20);
