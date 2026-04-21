@@ -52,16 +52,146 @@
 }
 
 .card2 {
+  position: relative;
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 20px;
   background: var(--card-bg);
   box-shadow: var(--shadow);
-  padding: 16px;
+  padding: 24px;
+  overflow: hidden;
+}
+
+.card2::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent) 0%, #ff6b6b 100%);
+}
+
+.card2__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.card2__icon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  background: var(--accent-bg);
+  border-radius: 12px;
+  color: var(--accent);
+}
+
+.card2__title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.card2__info {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.card2__infoIcon {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
 .card2--error {
   border-color: rgba(220, 38, 38, 0.35);
-  background: rgba(220, 38, 38, 0.06);
+}
+
+.card2--error::before {
+  background: linear-gradient(90deg, #dc2626 0%, #ef4444 100%);
+}
+
+.card2__section {
+  margin-bottom: 24px;
+}
+
+.card2__section:last-child {
+  margin-bottom: 0;
+}
+
+.card2__sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.card2__statBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, var(--accent-bg) 0%, rgba(255, 255, 255, 0.5) 100%);
+  border: 1px solid var(--accent-border);
+  border-radius: 14px;
+}
+
+.card2__statLabel {
+  font-size: 14px;
+  color: var(--text);
+}
+
+.card2__statValue {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.card2__statSubtext {
+  font-size: 12px;
+  color: var(--text);
+  margin-top: 4px;
+}
+
+.card2__emptyState {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: var(--bg);
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.card2__emptyIcon {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  background: var(--card-bg);
+  border-radius: 8px;
+  color: var(--text);
 }
 
 .toolbar {

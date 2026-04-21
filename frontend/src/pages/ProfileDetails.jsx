@@ -1410,70 +1410,48 @@ function SalaryPanel({ profileId, baseSalary, currentStatus }) {
 
   return (
     <div className="card2">
-      <div className="h2">Yearly salary records</div>
-      {attendanceBasedMin !== null ? (
-        <div className="p">
-          Attendance-based amount for {year} and status “{effectiveEmploymentStatus || '—'}” (only present days whose
-          recorded status matches exactly; cannot save below this; you may increase it): ₱
-          {attendanceBasedMin.toLocaleString()}
+      <div className="card2__header">
+        <div className="card2__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+          </svg>
         </div>
-      ) : (
-        <div className="p">
-          No present attendance days for {year} with recorded status “{effectiveEmploymentStatus || '—'}” yet. You may
-          save any salary amount (including 0).
-        </div>
-      )}
-      <div className="p">
-        Choose the <strong>employment status for this row</strong> before saving (it can differ from the profile’s
-        current value). Each unique <strong>year + status</strong> is its own record. Attendance totals use only days
-        stamped with that same status when the day was marked present.
+        <div className="card2__title">Yearly salary records</div>
       </div>
 
       <form className="salaryPanelForm" onSubmit={upsert}>
-        <div className="salaryPanelForm__fields">
-          <label className="salaryPanelForm__label">
-            <span className="salaryPanelForm__caption">Recorded employment status</span>
-            <input
-              className="input"
-              list={`salary-status-${profileId}`}
-              value={recordedStatus}
-              onChange={(e) => setRecordedStatus(e.target.value)}
-              placeholder="e.g. Permanent, Contractual"
-              autoComplete="off"
-            />
-            <datalist id={`salary-status-${profileId}`}>
-              {statusSuggestions.map((s) => (
-                <option key={s} value={s} />
-              ))}
-            </datalist>
-          </label>
-        </div>
-        
-        <div className="salaryPanelForm__modeToggle">
-          <label className="salaryPanelForm__label">
-            <span className="salaryPanelForm__caption">Date Selection Mode</span>
+        {/* Add New Record Section */}
+        <div className="card2__section">
+          <div className="card2__sectionTitle">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 5v14M5 12h14" />
+            </svg>
+            Add New Record
+          </div>
+
+          {/* Period Type - Top Row */}
+          <label className="salaryPanelForm__periodTypeRow">
+            <span className="salaryPanelForm__caption">Period Type</span>
             <div className="modeToggleGroup">
-              <label className="modeToggleOption">
+              <label className={`modeToggleOption ${!useDateRange ? 'active' : ''}`}>
                 <input
                   type="radio"
                   name="dateMode"
                   checked={!useDateRange}
                   onChange={() => {
                     setUseDateRange(false)
-                    // Reset to current year when switching to year only mode
                     setYear(new Date().getFullYear())
                   }}
                 />
-                <span>Year Only</span>
+                <span>Full Year</span>
               </label>
-              <label className="modeToggleOption">
+              <label className={`modeToggleOption ${useDateRange ? 'active' : ''}`}>
                 <input
                   type="radio"
                   name="dateMode"
                   checked={useDateRange}
                   onChange={() => {
                     setUseDateRange(true)
-                    // Clear dates when switching to date range mode
                     setStartDate('')
                     setEndDate('')
                   }}
@@ -1482,110 +1460,142 @@ function SalaryPanel({ profileId, baseSalary, currentStatus }) {
               </label>
             </div>
           </label>
-        </div>
 
-        {useDateRange ? (
-          <div className="salaryPanelForm__dateRange">
+          {/* Three Column Row: Employment Status | Year | Salary Amount */}
+          <div className="salaryPanelForm__threeColumn">
+            {/* Employment Status */}
             <label className="salaryPanelForm__label">
-              <span className="salaryPanelForm__caption">Date Range</span>
-              <div className="dateRangeInputs">
+              <span className="salaryPanelForm__caption">Employment Status</span>
+              <input
+                className="input"
+                list={`salary-status-${profileId}`}
+                value={recordedStatus}
+                onChange={(e) => setRecordedStatus(e.target.value)}
+                placeholder="Casual"
+                autoComplete="off"
+              />
+              <datalist id={`salary-status-${profileId}`}>
+                {statusSuggestions.map((s) => (
+                  <option key={s} value={s} />
+                ))}
+              </datalist>
+            </label>
+
+            {/* Year or Date Range */}
+            {useDateRange ? (
+              <label className="salaryPanelForm__label salaryPanelForm__label--dates">
+                <span className="salaryPanelForm__caption">Period</span>
+                <div className="dateRangeInputs dateRangeInputs--compact">
+                  <input
+                    className="input"
+                    type="date"
+                    value={startDate}
+                    max={new Date().toISOString().slice(0, 10)}
+                    onChange={(e) => {
+                      const newDate = e.target.value
+                      setStartDate(newDate)
+                      if (newDate) setYear(new Date(newDate).getFullYear())
+                    }}
+                  />
+                  <span className="dateRangeSeparator">→</span>
+                  <input
+                    className="input"
+                    type="date"
+                    value={endDate}
+                    min={startDate}
+                    max={new Date().toISOString().slice(0, 10)}
+                    onChange={(e) => setEndDate(e.target.value)}
+                  />
+                </div>
+              </label>
+            ) : (
+              <label className="salaryPanelForm__label">
+                <span className="salaryPanelForm__caption">Year</span>
                 <input
                   className="input"
-                  type="date"
-                  value={startDate}
-                  max={new Date().toISOString().slice(0, 10)}
-                  onChange={(e) => {
-                    const newDate = e.target.value
-                    setStartDate(newDate)
-                    // Update year to match start date when in date range mode
-                    if (newDate && useDateRange) {
-                      setYear(new Date(newDate).getFullYear())
-                    }
-                  }}
-                  placeholder="Start date"
+                  type="number"
+                  value={year}
+                  onChange={(e) => setYear(Number(e.target.value))}
+                  placeholder="2026"
+                  min="1970"
+                  max="2100"
                 />
-                <span className="dateRangeSeparator">to</span>
+              </label>
+            )}
+
+            {/* Salary Amount */}
+            <label className="salaryPanelForm__label">
+              <span className="salaryPanelForm__caption">
+                Salary Amount
+                {effectiveEmploymentStatus.toLowerCase().trim() === 'permanent' && attendanceBasedMin !== null && (
+                  <span className="salaryPanelForm__minTag">Min: ₱{attendanceBasedMin.toLocaleString()}</span>
+                )}
+              </span>
+              <div className="salaryInputWrapper">
+                <span className="salaryInputWrapper__currency">₱</span>
                 <input
-                  className="input"
-                  type="date"
-                  value={endDate}
-                  min={startDate}
-                  max={new Date().toISOString().slice(0, 10)}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  placeholder="End date"
+                  className="input salaryInputWrapper__input"
+                  type="number"
+                  min={effectiveEmploymentStatus.toLowerCase().trim() === 'permanent' ? (attendanceBasedMin ?? 0) : 0}
+                  step="0.01"
+                  value={salary}
+                  onChange={(e) => setSalary(e.target.value)}
+                  placeholder="0.00"
                 />
               </div>
             </label>
-          </div>
-        ) : (
-          <div className="salaryPanelForm__yearOnly">
-            <label className="salaryPanelForm__label">
-              <span className="salaryPanelForm__caption">Year</span>
-              <input
-                className="input"
-                type="number"
-                value={year}
-                onChange={(e) => setYear(Number(e.target.value))}
-                placeholder="e.g. 2026"
-                min="1970"
-                max="2100"
-              />
-            </label>
-          </div>
-        )}
 
-        <div className="inlineForm salaryPanelForm__row">
-          <input
-            className="input"
-            type="number"
-            min={effectiveEmploymentStatus.toLowerCase().trim() === 'permanent' ? (attendanceBasedMin ?? 0) : 0}
-            step="0.01"
-            value={salary}
-            onChange={(e) => setSalary(e.target.value)}
-            title="Salary amount"
-          />
-          <span className="salary-current-display">
-            Current: {(() => {
-              const status = String(effectiveEmploymentStatus || '').toLowerCase().trim()
-              const currentSalary = Number(baseSalary || 0)
-              
-              if (status === 'permanent') {
-                return `${currentSalary.toLocaleString()}/annum`
-              } else if (status === 'casual') {
-                return `${currentSalary.toLocaleString(undefined, { maximumFractionDigits: 2 })}/day`
-              } else {
-                return currentSalary.toLocaleString()
-              }
-            })()}
-          </span>
-          <button type="submit" className="btn btn--primary">
-            Save yearly salary
-          </button>
+            {/* Save Button */}
+            <button type="submit" className="btn btn--primary salaryPanelForm__saveBtnThreeCol">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2zM17 21v-8H7v8" />
+              </svg>
+              Save
+            </button>
+          </div>
         </div>
       </form>
-      {salaryError ? <div className="alert">{salaryError}</div> : null}
+      {salaryError ? <div className="alert alert--error">{salaryError}</div> : null}
 
-      <div className="table table--yearly-salary">
-        <div className="table__head">
-          <div>Year</div>
-          <div>Employment status</div>
-          <div>Salary</div>
-          <div />
-        </div>
-
-        {sortedRecords.map((r) => (
-          <div key={r.id} className="table__row">
-            <div>{r.year}</div>
-            <div>{r.employment_status_snapshot || '—'}</div>
-            <div>{Number(r.salary).toLocaleString()}</div>
-            <div>
-              <button type="button" className="btn btn--sm" onClick={() => remove(r.id)}>
-                Delete
-              </button>
-            </div>
+      {/* Saved Records Table */}
+      {sortedRecords.length > 0 && (
+        <div className="card2__section">
+          <div className="card2__sectionTitle">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z" />
+            </svg>
+            Saved Records ({sortedRecords.length})
           </div>
-        ))}
-      </div>
+
+          <div className="table table--modern table--yearly-salary">
+            <div className="table__header--modern">
+              <div className="table__cell">Year</div>
+              <div className="table__cell">Status</div>
+              <div className="table__cell table__cell--amount">Salary</div>
+              <div className="table__cell table__cell--actions" />
+            </div>
+
+            {sortedRecords.map((r) => (
+              <div key={r.id} className="table__row--modern">
+                <div className="table__cell">{r.year}</div>
+                <div className="table__cell">
+                  <span className={`badge badge--${(r.employment_status_snapshot || '').toLowerCase() === 'permanent' ? 'success' : 'warning'}`}>
+                    {r.employment_status_snapshot || '—'}
+                  </span>
+                </div>
+                <div className="table__cell table__cell--amount">₱{Number(r.salary).toLocaleString()}</div>
+                <div className="table__cell table__cell--actions">
+                  <button type="button" className="btn btn--modern btn--modernDanger btn--modernIcon" onClick={() => remove(r.id)} title="Delete">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
