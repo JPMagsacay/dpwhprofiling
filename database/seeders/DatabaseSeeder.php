@@ -15,8 +15,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            UserSeeder::class,
+        // Create default admin user
+        User::create([
+            'name' => 'DPWH Administrator',
+            'email' => 'admin@dpwh',
+            'password' => bcrypt('admin123'),
         ]);
     }
 }
