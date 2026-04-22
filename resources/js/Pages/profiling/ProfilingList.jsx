@@ -4,52 +4,6 @@ import { http } from '../../services/http'
 import Modal from '../../components/ui/Modal'
 import ProfileFormModal from '../../components/common/ProfileFormModal'
 
-function getPositionIcon(position) {
-  const pos = (position || '').toLowerCase()
-  // Bus Staff / Bus Driver
-  if (pos.includes('bus') || pos.includes('driver') || pos.includes('staff')) {
-    return (
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <title>Bus Staff</title>
-        <rect x="3" y="6" width="18" height="12" rx="2" />
-        <path d="M6 18v2" />
-        <path d="M18 18v2" />
-        <circle cx="7" cy="12" r="1" />
-        <circle cx="17" cy="12" r="1" />
-      </svg>
-    )
-  }
-  // Guardhouse / Security
-  if (pos.includes('guard') || pos.includes('security') || pos.includes('guardhouse')) {
-    return (
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <title>Security/Guardhouse</title>
-        <path d="M12 2L4 6v6c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V6l-8-4z" />
-        <path d="M12 8v4" />
-        <path d="M12 14h.01" />
-      </svg>
-    )
-  }
-  // Casual/Admin/General
-  if (pos.includes('casual') || pos.includes('admin') || pos.includes('staff')) {
-    return (
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <title>Casual Staff</title>
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-        <circle cx="12" cy="7" r="4" />
-      </svg>
-    )
-  }
-  // Default icon for other positions
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <title>Employee</title>
-      <path d="M16 20v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-      <circle cx="12" cy="7" r="4" />
-    </svg>
-  )
-}
-
 function Avatar({ url, name }) {
   if (url) {
     // Construct full URL if it's a relative path
@@ -214,7 +168,6 @@ export default function ProfilingList() {
             <tr>
               <th>Photo</th>
               <th>Name</th>
-              <th>Position</th>
               <th>Status</th>
               <th>Branch</th>
               <th>Salary</th>
@@ -231,12 +184,6 @@ export default function ProfilingList() {
                   <Link to={`/profiling/${p.id}`} className="profileTable__nameLink">
                     {p.full_name}
                   </Link>
-                </td>
-                <td className="profileTable__cell profileTable__cell--position">
-                  <span className="profileTable__position">
-                    {getPositionIcon(p.position)}
-                    <span>{p.position || '-'}</span>
-                  </span>
                 </td>
                 <td className="profileTable__cell profileTable__cell--status">
                   {p.employment_status && (
