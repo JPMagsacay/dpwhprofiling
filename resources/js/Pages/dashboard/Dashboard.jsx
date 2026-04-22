@@ -164,6 +164,101 @@ function ChartBar({ items }) {
   )
 }
 
+function StatusBarChart({ data }) {
+  const total = data.permanent + data.casual
+  if (total === 0) return <div className="empty-state">No employment status data</div>
+
+  const permanentPct = (data.permanent / total) * 100
+  const casualPct = (data.casual / total) * 100
+
+  return (
+    <div className="status-chart">
+      <div className="status-chart__legend">
+        <div className="status-chart__legend-item">
+          <span className="status-chart__color status-chart__color--permanent"></span>
+          <span>Permanent ({data.permanent})</span>
+        </div>
+        <div className="status-chart__legend-item">
+          <span className="status-chart__color status-chart__color--casual"></span>
+          <span>Casual ({data.casual})</span>
+        </div>
+      </div>
+      <div className="status-chart__bar">
+        <div
+          className="status-chart__segment status-chart__segment--permanent"
+          style={{ width: `${permanentPct}%` }}
+          title={`Permanent: ${data.permanent} (${permanentPct.toFixed(1)}%)`}
+        />
+        <div
+          className="status-chart__segment status-chart__segment--casual"
+          style={{ width: `${casualPct}%` }}
+          title={`Casual: ${data.casual} (${casualPct.toFixed(1)}%)`}
+        />
+      </div>
+      <div className="status-chart__labels">
+        <span>{permanentPct.toFixed(1)}%</span>
+        <span>{casualPct.toFixed(1)}%</span>
+      </div>
+    </div>
+  )
+}
+
+function ServicePieChart({ data }) {
+  const entries = Object.entries(data).filter(([_, v]) => v > 0)
+  if (entries.length === 0) return <div className="empty-state">No service data available</div>
+
+  const total = entries.reduce((sum, [_, v]) => sum + v, 0)
+  const labels = {
+    under_5: '< 5 years',
+    under_10: '< 10 years',
+    under_15: '< 15 years',
+    under_20: '< 20 years',
+    over_20: '20+ years',
+  }
+  const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6']
+
+  let currentAngle = 0
+
+  return (
+    <div className="pie-chart">
+      <svg viewBox="0 0 100 100" className="pie-chart__svg">
+        {entries.map(([key, value], i) => {
+          const angle = (value / total) * 360
+          const startAngle = currentAngle
+          const endAngle = currentAngle + angle
+          currentAngle += angle
+
+          const startRad = (startAngle * Math.PI) / 180
+          const endRad = (endAngle * Math.PI) / 180
+          const x1 = 50 + 40 * Math.cos(startRad)
+          const y1 = 50 + 40 * Math.sin(startRad)
+          const x2 = 50 + 40 * Math.cos(endRad)
+          const y2 = 50 + 40 * Math.sin(endRad)
+          const largeArc = angle > 180 ? 1 : 0
+
+          return (
+            <path
+              key={key}
+              d={`M 50 50 L ${x1} ${y1} A 40 40 0 ${largeArc} 1 ${x2} ${y2} Z`}
+              fill={colors[i % colors.length]}
+              stroke="white"
+              strokeWidth="1"
+            />
+          )
+        })}
+      </svg>
+      <div className="pie-chart__legend">
+        {entries.map(([key, value], i) => (
+          <div key={key} className="pie-chart__legend-item">
+            <span className="pie-chart__color" style={{ background: colors[i % colors.length] }}></span>
+            <span>{labels[key]}: {value}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function InsightItem({ label, value, change }) {
   return (
     <div className="insight-item">
@@ -198,6 +293,8 @@ export default function Dashboard() {
   }, [])
 
   const cards = useMemo(() => data?.cards || {}, [data])
+  const employmentStatus = useMemo(() => data?.employment_status || { permanent: 0, casual: 0 }, [data])
+  const yearsOfService = useMemo(() => data?.years_of_service || {}, [data])
   const salaryByYear = useMemo(() => data?.salary_by_year || [], [data])
   const latestSalary = salaryByYear.length ? Number(salaryByYear[0]?.total_salary || 0) : 0
   const previousSalary = salaryByYear.length > 1 ? Number(salaryByYear[1]?.total_salary || 0) : 0
@@ -209,12 +306,11 @@ export default function Dashboard() {
       <header className="dashboard__header">
         <div className="dashboard__header-content">
           <h1 className="dashboard__title">Dashboard</h1>
-          <p className="dashboard__subtitle">General overview of the record in the system</p>
+          <p className="dashboard__subtitle">Employee overview and workforce analytics</p>
         </div>
         <div className="dashboard__header-actions">
           <ThemeToggle />
           <UserProfile />
-        
         </div>
       </header>
       <main className={`dashboard__main ${data ? 'dashboard__main--loaded' : ''}`}>
@@ -229,20 +325,42 @@ export default function Dashboard() {
           <div className="dashboard__content">
             <section className="metrics-grid">
               <MetricCard
-                title="Profiles"
-                value={cards.profiles ?? 0}
-                subtitle="Total registered profiles"
+                title="Total Employees"
+                value={cards.total_employees ?? 0}
+                subtitle="All registered employees"
               />
               <MetricCard
-                title="Present Days"
-                value={cards.present_days_year ?? 0}
-                subtitle={`For ${data?.year || '2026'}`}
+                title="Active Employees"
+                value={cards.active_employees ?? 0}
+                subtitle="Currently employed"
               />
               <MetricCard
-                title="Presence Coverage"
-                value={`${cards.presence_coverage_year ?? 0}%`}
-                subtitle={`For ${data?.year || '2026'}`}
+                title="Inactive Employees"
+                value={cards.inactive_employees ?? 0}
+                subtitle="Separated/Resigned"
               />
+            </section>
+
+            <section className="dashboard-grid">
+              <div className="card chart-card">
+                <div className="card__header">
+                  <h2 className="card__title">Employment Status</h2>
+                  <p className="card__description">Permanent vs Casual employees</p>
+                </div>
+                <div className="card__content">
+                  <StatusBarChart data={employmentStatus} />
+                </div>
+              </div>
+
+              <div className="card chart-card">
+                <div className="card__header">
+                  <h2 className="card__title">Years of Service</h2>
+                  <p className="card__description">Employee tenure distribution</p>
+                </div>
+                <div className="card__content">
+                  <ServicePieChart data={yearsOfService} />
+                </div>
+              </div>
             </section>
 
             <section className="dashboard-grid">
