@@ -392,16 +392,86 @@
   transform: scale(1.05);
 }
 
+/* Mobile sidebar styles */
+.sidenav__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  backdrop-filter: blur(2px);
+}
 
+.sidenav__mobile-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1001;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card-bg);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sidenav__mobile-toggle:hover {
+  background: var(--accent-bg);
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: scale(1.05);
+}
+
+.sidenav__mobile-toggle-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Hide mobile toggle on desktop */
+@media (min-width: 981px) {
+  .sidenav__mobile-toggle {
+    display: none;
+  }
+}
+
+/* Mobile sidebar positioning */
 @media (max-width: 980px) {
+  .sidenav {
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+  }
+  
+  .sidenav--mobile-open {
+    transform: translateX(0);
+  }
+  
+  /* Ensure mobile toggle button is visible */
+  .sidenav__mobile-toggle {
+    display: flex;
+  }
+
   .shell__main,
   .shell__main--collapsed {
     padding-left: 0.75rem;
+    padding-top: 0.5rem;
   }
 
   .sidenav,
   .sidenav--collapsed {
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     border-right: none;
     border-bottom: 1px solid var(--border);
     width: 100%;
@@ -409,6 +479,8 @@
     min-width: 100%;
     padding: 0.75rem;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+    overflow-y: auto;
+    z-index: 1000;
   }
 
   .sidenav--collapsed .sidenav__brand,

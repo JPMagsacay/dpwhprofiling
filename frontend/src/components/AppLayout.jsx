@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import { useTheme } from '../theme/ThemeContext'
@@ -25,6 +25,33 @@ export default function AppLayout() {
   const [logoutConfirm, setLogoutConfirm] = useState(false)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  // Auto-collapse sidebar on smaller screens
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 980) {
+        setIsSidebarCollapsed(true)
+        setIsMobileMenuOpen(false)
+      } else {
+        setIsSidebarCollapsed(false)
+        setIsMobileMenuOpen(false)
+      }
+    }
+
+    // Set initial state based on screen size
+    handleResize()
+
+    // Listen for resize events
+    window.addEventListener('resize', handleResize)
+
+    // Cleanup
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
 
   async function onLogout() {
     setLogoutConfirm(true)
@@ -44,25 +71,61 @@ export default function AppLayout() {
 
   return (
     <div className="shell">
-      <aside className={`sidenav ${isSidebarCollapsed ? 'sidenav--collapsed' : ''}`}>
+      {/* Mobile menu overlay */}
+      {window.innerWidth <= 980 && isMobileMenuOpen && (
+        <div 
+          className="sidenav__overlay"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+      
+      {/* Mobile menu toggle button */}
+      {window.innerWidth <= 980 && (
         <button
           type="button"
-          className="sidenav__toggle"
-          onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-          title={isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          className="sidenav__mobile-toggle"
+          onClick={toggleMobileMenu}
+          aria-label="Toggle menu"
         >
-          <svg className="sidenav__toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-            {isSidebarCollapsed ? (
+          <svg className="sidenav__mobile-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            {isMobileMenuOpen ? (
               <>
-                <polyline points="9 18 15 12 9 6"></polyline>
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
               </>
             ) : (
               <>
-                <polyline points="15 18 9 12 15 6"></polyline>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
               </>
             )}
           </svg>
         </button>
+      )}
+
+      <aside className={`sidenav ${isSidebarCollapsed ? 'sidenav--collapsed' : ''} ${window.innerWidth <= 980 && isMobileMenuOpen ? 'sidenav--mobile-open' : ''}`}>
+        {/* Desktop toggle button */}
+        {window.innerWidth > 980 && (
+          <button
+            type="button"
+            className="sidenav__toggle"
+            onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+            title={isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          >
+            <svg className="sidenav__toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+              {isSidebarCollapsed ? (
+                <>
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </>
+              ) : (
+                <>
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </>
+              )}
+            </svg>
+          </button>
+        )}
         <div className="sidenav__logo">
           <img src="/dpwh-logo.png" alt="DPWH Logo" className="sidenav__logo-img" />
         </div>

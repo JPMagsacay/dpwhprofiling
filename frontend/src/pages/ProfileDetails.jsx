@@ -879,9 +879,9 @@ function AttendancePanel({ profileId, baseSalary }) {
           <button
             type="button"
             className="btn btn--sm btn--primary attendancePanel__addDayBtn"
-            onClick={() => setShowAddForm(!showAddForm)}
+            onClick={() => setShowAddForm(true)}
           >
-            {showAddForm ? 'Close' : '+ Add day'}
+            + Add day
           </button>
         </div>
         {startDate && endDate && (
@@ -890,6 +890,91 @@ function AttendancePanel({ profileId, baseSalary }) {
           </div>
         )}
       </form>
+
+      {/* Add Day Modal */}
+      {showAddForm && (
+        <div className="modalOverlay" onClick={() => {
+          setShowAddForm(false)
+          setNewDate('')
+          setNewPresent(true)
+        }}>
+          <div className="modal modal--sm" onClick={(e) => e.stopPropagation()}>
+            <div className="modal__header">
+              <h2 className="modal__title">Add Attendance Day</h2>
+              <button
+                type="button"
+                className="modal__close"
+                onClick={() => {
+                  setShowAddForm(false)
+                  setNewDate('')
+                  setNewPresent(true)
+                }}
+                aria-label="Close"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="modal__body">
+              <div className="addDayForm">
+                <div className="addDayForm__field">
+                  <label className="addDayForm__label">Date</label>
+                  <input
+                    className="addDayForm__input"
+                    type="date"
+                    value={newDate}
+                    max={new Date().toISOString().slice(0, 10)}
+                    onChange={(e) => setNewDate(e.target.value)}
+                    autoFocus
+                  />
+                </div>
+
+                <div className="addDayForm__field">
+                  <label className="addDayForm__label">Attendance Status</label>
+                  <div className="addDayForm__checkboxWrap">
+                    <input
+                      type="checkbox"
+                      className="addDayForm__checkbox"
+                      id="presentCheck"
+                      checked={newPresent}
+                      onChange={(e) => setNewPresent(e.target.checked)}
+                    />
+                    <label htmlFor="presentCheck" style={{ cursor: 'pointer', fontSize: '15px', color: 'var(--text)' }}>
+                      Mark as Present
+                    </label>
+                  </div>
+                </div>
+
+                <div style={{ fontSize: '13px', color: 'var(--text)', opacity: 0.7, marginTop: '8px' }}>
+                  Employment status and salary will be recorded from profile settings.
+                </div>
+              </div>
+            </div>
+
+            <div className="modal__footer">
+              <button
+                type="button"
+                className="btn btn--secondary"
+                onClick={() => {
+                  setShowAddForm(false)
+                  setNewDate('')
+                  setNewPresent(true)
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn btn--primary"
+                onClick={addNewRecord}
+                disabled={!newDate || addLoading}
+              >
+                {addLoading ? 'Saving...' : 'Save'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {rangeError && (
         <div className="alert" style={{ marginBottom: '1rem', maxWidth: '800px' }}>
@@ -964,7 +1049,7 @@ function AttendancePanel({ profileId, baseSalary }) {
           </div>
         </div>
       )}
-
+      
       {/* Daily Records - Minimal Header */}
       <div className="attendancePanel__recordsHeader">
         <span className="attendancePanel__recordsTitle">
@@ -1012,45 +1097,6 @@ function AttendancePanel({ profileId, baseSalary }) {
                   </label>
                 </div>
               </div>
-
-              {showAddForm && (
-                <div className="table__row table__row--add">
-                  <div>
-                    <input
-                      className="input input--sm"
-                      type="date"
-                      value={newDate}
-                      max={new Date().toISOString().slice(0, 10)}
-                      onChange={(e) => setNewDate(e.target.value)}
-                      placeholder="Date"
-                    />
-                  </div>
-                  <div>
-                    <label className="check check--sm">
-                      <input
-                        type="checkbox"
-                        checked={newPresent}
-                        onChange={(e) => setNewPresent(e.target.checked)}
-                      />{' '}
-                      Present
-                    </label>
-                  </div>
-                  <div className="muted table__cellMuted">From profile when saved</div>
-                  <div className="muted table__cellMuted">—</div>
-                  <div className="table__actions">
-                    <button type="button" className="btn btn--sm btn--primary" onClick={addNewRecord} disabled={!newDate}>
-                      Save
-                    </button>
-                    <button type="button" className="btn btn--sm" onClick={() => {
-                      setShowAddForm(false)
-                      setNewDate('')
-                      setNewPresent(true)
-                    }}>
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              )}
 
               {sortedDailyForYear.map((r) => (
                 <div key={r.id} className={`table__row ${selectedRecords.has(r.id) ? 'table__row--selected' : ''}`}>
@@ -1350,7 +1396,6 @@ function SalaryPanel({ profileId, baseSalary, currentStatus }) {
       }
     }
     
-    // Only apply minimum salary validation to permanent employees
     const isPermanent = effectiveEmploymentStatus.toLowerCase().trim() === 'permanent'
     
     if (
