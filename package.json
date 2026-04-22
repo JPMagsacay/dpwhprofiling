@@ -10,7 +10,7 @@
         "lint": "npx eslint resources/js",
         "preview": "npx vite preview",
         "install:all": "npm install && composer install",
-        "setup": "composer install && npm install && cp .env.example .env && php artisan key:generate"
+        "setup": "composer install && npm install && cp .env.example .env && php artisan key:generate && php artisan storage:link"
     },
     "dependencies": {
         "axios": "^1.13.6",
