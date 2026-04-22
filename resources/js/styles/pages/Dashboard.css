@@ -75,6 +75,9 @@
   padding: 0.875rem 1rem;
   border-bottom: 1px solid #e2e8f0;
   vertical-align: middle;
+  white-space: normal;
+  word-wrap: break-word;
+  max-width: 200px;
 }
 
 .profileTable__row:hover {
@@ -102,10 +105,17 @@
   font-size: 0.875rem;
 }
 
+.profileTable__cell--name {
+  max-width: 250px;
+}
+
 .profileTable__nameLink {
   color: #1e293b;
   font-weight: 600;
   text-decoration: none;
+  white-space: normal;
+  word-wrap: break-word;
+  display: inline-block;
 }
 
 .profileTable__nameLink:hover {
