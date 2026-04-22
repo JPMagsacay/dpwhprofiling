@@ -208,47 +208,58 @@ export default function ProfilingList() {
         </div>
       ) : null}
 
-      <div className="grid">
-        {(pageData?.data || []).map((p, index) => (
-          <Link key={p.id} className="profileCard" to={`/profiling/${p.id}`}>
-            <div className="profileCard__header">
-              <Avatar url={p.photo_url} name={p.full_name} />
-              {p.employment_status && (
-                <div className={`profileCard__status profileCard__status--${p.employment_status.toLowerCase()}`}>
-                  {p.employment_status}
-                </div>
-              )}
-            </div>
-            <div className="profileCard__body">
-              <h3 className="profileCard__name">{p.full_name}</h3>
-              <div className="profileCard__position">
-                {getPositionIcon(p.position)}
-                <span>{p.position || 'Position not specified'}</span>
-              </div>
-              <div className="profileCard__details">
-                <div className="profileCard__detail">
-                  <span className="profileCard__detail-label">Salary</span>
-                  <span className="profileCard__detail-value">₱{Number(p.base_salary || 0).toLocaleString()}</span>
-                </div>
-                {p.branch && (
-                  <div className="profileCard__detail">
-                    <span className="profileCard__detail-label">Branch</span>
-                    <span className="profileCard__detail-value">{p.branch}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="profileCard__footer">
-              <div className="profileCard__action">
-                <span>View Details</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <title>View profile details</title>
-                  <path d="M9 18l6-6-6-6" />
-                </svg>
-              </div>
-            </div>
-          </Link>
-        ))}
+      <div className="profileTableContainer">
+        <table className="profileTable">
+          <thead>
+            <tr>
+              <th>Photo</th>
+              <th>Name</th>
+              <th>Position</th>
+              <th>Status</th>
+              <th>Branch</th>
+              <th>Salary</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {(pageData?.data || []).map((p) => (
+              <tr key={p.id} className="profileTable__row">
+                <td className="profileTable__cell profileTable__cell--photo">
+                  <Avatar url={p.photo_url} name={p.full_name} />
+                </td>
+                <td className="profileTable__cell profileTable__cell--name">
+                  <Link to={`/profiling/${p.id}`} className="profileTable__nameLink">
+                    {p.full_name}
+                  </Link>
+                </td>
+                <td className="profileTable__cell profileTable__cell--position">
+                  <span className="profileTable__position">
+                    {getPositionIcon(p.position)}
+                    <span>{p.position || '-'}</span>
+                  </span>
+                </td>
+                <td className="profileTable__cell profileTable__cell--status">
+                  {p.employment_status && (
+                    <span className={`profileTable__status profileTable__status--${p.employment_status.toLowerCase()}`}>
+                      {p.employment_status}
+                    </span>
+                  )}
+                </td>
+                <td className="profileTable__cell profileTable__cell--branch">
+                  {p.branch || '-'}
+                </td>
+                <td className="profileTable__cell profileTable__cell--salary">
+                  ₱{Number(p.base_salary || 0).toLocaleString()}
+                </td>
+                <td className="profileTable__cell profileTable__cell--actions">
+                  <Link to={`/profiling/${p.id}`} className="btn btn--sm btn--primary">
+                    View
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       </main>
 
