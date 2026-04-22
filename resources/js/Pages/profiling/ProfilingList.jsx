@@ -19,6 +19,12 @@ function Avatar({ url, name }) {
   return <div className="avatar avatar--fallback">{initials || '?'}</div>
 }
 
+function formatName(surname, givenName, middleName) {
+  const middleInitial = middleName ? middleName.charAt(0).toUpperCase() + '.' : ''
+  const givenWithMiddle = middleInitial ? `${givenName} ${middleInitial}` : givenName
+  return `${surname}, ${givenWithMiddle}`.trim()
+}
+
 export default function ProfilingList() {
   const [q, setQ] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
@@ -178,11 +184,11 @@ export default function ProfilingList() {
             {(pageData?.data || []).map((p) => (
               <tr key={p.id} className="profileTable__row">
                 <td className="profileTable__cell profileTable__cell--photo">
-                  <Avatar url={p.photo_url} name={p.full_name} />
+                  <Avatar url={p.photo_url} name={formatName(p.surname, p.given_name, p.middle_name)} />
                 </td>
                 <td className="profileTable__cell profileTable__cell--name">
                   <Link to={`/profiling/${p.id}`} className="profileTable__nameLink">
-                    {p.full_name}
+                    {formatName(p.surname, p.given_name, p.middle_name)}
                   </Link>
                 </td>
                 <td className="profileTable__cell profileTable__cell--status">
