@@ -1,100 +1,115 @@
-import Checkbox from '@/Components/Checkbox';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
+import '../../styles/pages/Login.css'
 
-export default function Login({ status, canResetPassword }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        email: '',
-        password: '',
-        remember: false,
-    });
+export default function Login() {
+  const { login, error, setError } = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const next = location.state?.from?.pathname || '/dashboard'
 
-    const submit = (e) => {
-        e.preventDefault();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
 
-        post(route('login'), {
-            onFinish: () => reset('password'),
-        });
-    };
+  async function onSubmit(e) {
+    e.preventDefault()
+    setSubmitting(true)
+    setError(null)
 
-    return (
-        <GuestLayout>
-            <Head title="Log in" />
+    try {
+      await login({ email, password })
+      navigate(next, { replace: true })
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setSubmitting(false)
+    }
+  }
 
-            {status && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    {status}
-                </div>
+  return (
+    <div className="loginPage">
+      <main className="loginCard" role="main">
+        <section className="loginLogoPane" aria-hidden="true">
+          <img src="/dpwh-logo.png" alt="" className="loginLogoLarge" />
+          <p className="loginLogoTagline">DEPARTMENT OF PUBLIC WORKS AND HIGHWAYS</p>
+        </section>
+
+        <section className="loginFormPane">
+          <h1 className="loginTitle">SERVICE PROFILING</h1>
+
+          <form className="form" onSubmit={onSubmit}>
+            <label className="field">
+              <span className="field__label">Username or Email</span>
+              <input
+                className="field__input"
+                type="text"
+                autoComplete="email"
+                placeholder="Enter your username or email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </label>
+
+            <label className="field">
+              <span className="field__label">Password</span>
+              <div className="passwordField">
+                <input
+                  className="field__input"
+                  type={showPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+
+                <button
+                  type="button"
+                  className="passwordToggle"
+                  onClick={() => setShowPassword(prev => !prev)}
+                >
+                  {showPassword ? (
+                    // OPEN EYE
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M1 12C1 12 5 5 12 5s11 7 11 7-4 7-11 7S1 12 1 12Z" stroke="currentColor" strokeWidth="2"/>
+                      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                  ) : (
+                    // SLASHED EYE
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M17.94 17.94C16.14 19.24 14.13 20 12 20C5 20 1 12 1 12C2.24 9.83 3.86 7.96 5.94 6.56" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M10.58 10.58C10.21 10.95 10 11.46 10 12C10 13.1 10.9 14 12 14C12.54 14 13.05 13.79 13.42 13.42" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M1 1L23 23" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </label>
+
+            {error && (
+              <div className="form__error">
+                {error?.message || 'Login failed'}
+              </div>
             )}
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
+            <div className="forgotPassword">
+              <Link to="/forgot-password">Forgot password?</Link>
+            </div>
 
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        isFocused={true}
-                        onChange={(e) => setData('email', e.target.value)}
-                    />
+            <button className="signInButton" disabled={submitting}>
+              {submitting ? 'Logging in...' : 'LOGIN'}
+            </button>
+          </form>
 
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
-
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="current-password"
-                        onChange={(e) => setData('password', e.target.value)}
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div className="mt-4 block">
-                    <label className="flex items-center">
-                        <Checkbox
-                            name="remember"
-                            checked={data.remember}
-                            onChange={(e) =>
-                                setData('remember', e.target.checked)
-                            }
-                        />
-                        <span className="ms-2 text-sm text-gray-600">
-                            Remember me
-                        </span>
-                    </label>
-                </div>
-
-                <div className="mt-4 flex items-center justify-end">
-                    {canResetPassword && (
-                        <Link
-                            href={route('password.request')}
-                            className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                        >
-                            Forgot your password?
-                        </Link>
-                    )}
-
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
-                    </PrimaryButton>
-                </div>
-            </form>
-        </GuestLayout>
-    );
+          <div className="loginFooter">
+            Don't have an account? <Link to="/register">Sign up</Link>
+          </div>
+        </section>
+      </main>
+    </div>
+  )
 }

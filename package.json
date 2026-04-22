@@ -4,12 +4,33 @@
     "version": "1.0.0",
     "type": "module",
     "scripts": {
-        "dev": "npx concurrently \"php artisan serve --host=127.0.0.1 --port=8000\" \"cd resources/frontend && npm run dev\" --names=backend,frontend --prefix-colors=green,blue",
-        "build": "cd resources/frontend && npm run build",
-        "install:all": "npm install && cd resources/frontend && npm install",
-        "setup": "composer install && npm run install:all && cp .env.example .env && php artisan key:generate"
+        "dev": "npx concurrently \"php artisan serve --host=127.0.0.1 --port=8000\" \"npm run frontend\" --names=backend,frontend --prefix-colors=green,blue",
+        "frontend": "npx vite --config vite.config.js",
+        "build": "npx vite build",
+        "lint": "npx eslint resources/js",
+        "preview": "npx vite preview",
+        "install:all": "npm install && composer install",
+        "setup": "composer install && npm install && cp .env.example .env && php artisan key:generate"
+    },
+    "dependencies": {
+        "axios": "^1.13.6",
+        "react": "^19.2.4",
+        "react-dom": "^19.2.4",
+        "react-router-dom": "^7.13.1"
     },
     "devDependencies": {
-        "concurrently": "^9.0.1"
+        "concurrently": "^9.0.1",
+        "@eslint/js": "^9.39.4",
+        "@types/react": "^19.2.14",
+        "@types/react-dom": "^19.2.3",
+        "@vitejs/plugin-react": "^6.0.0",
+        "autoprefixer": "^10.4.27",
+        "eslint": "^9.39.4",
+        "eslint-plugin-react-hooks": "^7.0.1",
+        "eslint-plugin-react-refresh": "^0.5.2",
+        "globals": "^17.4.0",
+        "postcss": "^8.5.8",
+        "tailwindcss": "^4.2.2",
+        "vite": "^8.0.0"
     }
 }

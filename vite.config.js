@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react()],
   base: '/dist/',
   build: {
-    outDir: '../../public/dist',
+    outDir: 'public/dist',
     emptyOutDir: true,
   },
   server: {
@@ -22,7 +22,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src')
+      '@': resolve(__dirname, 'resources/js')
     }
   }
 })
