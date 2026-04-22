@@ -145,25 +145,6 @@ function MetricCard({ title, value, subtitle, trend }) {
   )
 }
 
-function ChartBar({ items }) {
-  const max = Math.max(1, ...items.map((x) => Number(x.total_salary || 0)))
-  return (
-    <div className="chart-bars">
-      {items.map((x) => {
-        const v = Number(x.total_salary || 0)
-        const h = Math.round((v / max) * 100)
-        return (
-          <div key={x.year} className="chart-bar" title={`${x.year}: ₱${v.toLocaleString()}`}>
-            <div className="chart-bar__fill" style={{ height: `${h}%` }} />
-            <div className="chart-bar__value">₱{v.toLocaleString()}</div>
-            <div className="chart-bar__label">{x.year}</div>
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-
 function StatusBarChart({ data }) {
   const total = data.permanent + data.casual
   if (total === 0) return <div className="empty-state">No employment status data</div>
@@ -259,16 +240,6 @@ function ServicePieChart({ data }) {
   )
 }
 
-function InsightItem({ label, value, change }) {
-  return (
-    <div className="insight-item">
-      <div className="insight-item__label">{label}</div>
-      <div className={`insight-item__value ${change >= 0 ? 'positive' : 'negative'}`}>
-        {value}
-      </div>
-    </div>
-  )
-}
 
 export default function Dashboard() {
   const [data, setData] = useState(null)
@@ -295,11 +266,6 @@ export default function Dashboard() {
   const cards = useMemo(() => data?.cards || {}, [data])
   const employmentStatus = useMemo(() => data?.employment_status || { permanent: 0, casual: 0 }, [data])
   const yearsOfService = useMemo(() => data?.years_of_service || {}, [data])
-  const salaryByYear = useMemo(() => data?.salary_by_year || [], [data])
-  const latestSalary = salaryByYear.length ? Number(salaryByYear[0]?.total_salary || 0) : 0
-  const previousSalary = salaryByYear.length > 1 ? Number(salaryByYear[1]?.total_salary || 0) : 0
-  const salaryDelta = latestSalary - previousSalary
-  const salaryDeltaPct = previousSalary > 0 ? (salaryDelta / previousSalary) * 100 : 0
 
   return (
     <div className="dashboard">
@@ -363,47 +329,6 @@ export default function Dashboard() {
               </div>
             </section>
 
-            <section className="dashboard-grid">
-              <div className="card chart-card">
-                <div className="card__header">
-                  <h2 className="card__title">Total Salary by Year</h2>
-                  <p className="card__description">Based on saved yearly salary records</p>
-                </div>
-                <div className="card__content">
-                  {salaryByYear.length ? (
-                    <ChartBar items={salaryByYear} />
-                  ) : (
-                    <div className="empty-state">
-                      <div className="empty-state__icon">—</div>
-                      <div className="empty-state__text">No yearly salary data available</div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="card insights-card">
-                <div className="card__header">
-                  <h2 className="card__title">Quick Insights</h2>
-                </div>
-                <div className="card__content">
-                  <div className="insights-list">
-                    <InsightItem 
-                      label="Latest yearly total" 
-                      value={`₱${latestSalary.toLocaleString()}`}
-                    />
-                    <InsightItem 
-                      label="Previous yearly total" 
-                      value={`₱${previousSalary.toLocaleString()}`}
-                    />
-                    <InsightItem 
-                      label="Year-over-year change" 
-                      value={`${salaryDelta >= 0 ? '+' : '-'}₱${Math.abs(salaryDelta).toLocaleString()}${previousSalary > 0 ? ` (${salaryDeltaPct >= 0 ? '+' : ''}${salaryDeltaPct.toFixed(1)}%)` : ''}`}
-                      change={salaryDelta}
-                    />
-                  </div>
-                </div>
-              </div>
-            </section>
           </div>
         )}
       </main>
