@@ -3,9 +3,9 @@ import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [react()],
-  base: '/dist/',
+  base: command === 'build' ? '/dist/' : '/',
   build: {
     outDir: 'public/dist',
     emptyOutDir: true,
@@ -25,4 +25,4 @@ export default defineConfig({
       '@': resolve(__dirname, 'resources/js')
     }
   }
-})
+}))
