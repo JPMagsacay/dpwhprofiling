@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { http } from '../../services/http'
-
-function toInputDate(val) {
-  if (!val) return ''
-  return String(val).slice(0, 10)
-}
+import { toInputDate } from '../../utils'
 
 export default function ProfileForm() {
   const { id } = useParams()

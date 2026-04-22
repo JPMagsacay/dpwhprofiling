@@ -2,23 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, NavLink, useNavigate, useParams } from 'react-router-dom'
 import { http } from '../../services/http'
 import ConfirmationDialog from '../../components/ui/ConfirmationDialog'
+import { toInputDate, calculateWorkingDays } from '../../utils'
 import '../../styles/pages/ProfileDetails.css'
-
-function calculateWorkingDays(start, end) {
-  const startDate = new Date(start)
-  const endDate = new Date(end)
-  let workingDays = 0
-
-  for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-    const dayOfWeek = d.getDay()
-    if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-      // 0 = Sunday, 6 = Saturday
-      workingDays++
-    }
-  }
-
-  return workingDays
-}
 
 function Tab({ to, children, end, icon }) {
   return (
@@ -45,11 +30,6 @@ function Avatar({ url, name }) {
     .map((p) => p[0]?.toUpperCase())
     .join('')
   return <div className="avatar avatar--lg avatar--fallback">{initials || '?'}</div>
-}
-
-function toInputDate(val) {
-  if (!val) return ''
-  return String(val).slice(0, 10)
 }
 
 function EditProfileModal({ profile, isOpen, onClose, onSave }) {
